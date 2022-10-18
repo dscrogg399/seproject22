@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.TreeView?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.effect.InnerShadow?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="960.0" prefWidth="1260.0" style="-fx-background-color: #6a6a6a;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="agridrone.view.DashboardController">
+   <children>
+      <Label alignment="CENTER" layoutX="554.0" layoutY="25.0" text="Farm Dashboard" textFill="WHITE" AnchorPane.bottomAnchor="900.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <font>
+            <Font size="48.0" />
+         </font>
+      </Label>
+      <HBox fx:id="controlPanel" alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="30.0" AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="75.0">
+         <children>
+            <SplitPane dividerPositions="0.7" orientation="VERTICAL" prefWidth="530.0" style="-fx-background-color: #d3d3d3;">
+              <items>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+                     <children>
+                        <Label layoutX="39.0" layoutY="14.0" text="Items and Containers" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="5.0">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Label>
+                        <VBox prefHeight="200.0" prefWidth="100.0" spacing="10.0" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="40.0">
+                           <children>
+                              <TreeView fx:id="itemList" prefHeight="400.0">
+                                 <effect>
+                                    <InnerShadow />
+                                 </effect>
+                              </TreeView>
+                              <Label fx:id="detailsLabel" text="{Item} Details">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </Label>
+                              <GridPane prefHeight="200.0">
+                                <columnConstraints>
+                                  <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" percentWidth="20.0" />
+                                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                </columnConstraints>
+                                <rowConstraints>
+                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                </rowConstraints>
+                                 <children>
+                                    <Label text="Name:">
+                                       <font>
+                                          <Font size="18.0" />
+                                       </font>
+                                       <GridPane.margin>
+                                          <Insets right="5.0" />
+                                       </GridPane.margin>
+                                    </Label>
+                                    <Label text="Price:" GridPane.rowIndex="1">
+                                       <font>
+                                          <Font size="18.0" />
+                                       </font>
+                                       <GridPane.margin>
+                                          <Insets right="5.0" />
+                                       </GridPane.margin>
+                                    </Label>
+                                    <Label text="Location:" GridPane.rowIndex="2">
+                                       <font>
+                                          <Font size="18.0" />
+                                       </font>
+                                       <GridPane.margin>
+                                          <Insets right="5.0" />
+                                       </GridPane.margin>
+                                    </Label>
+                                    <Label fx:id="nameLabel" text="Label" GridPane.columnIndex="1">
+                                       <font>
+                                          <Font size="18.0" />
+                                       </font>
+                                    </Label>
+                                    <Label fx:id="priceLabel" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                       <font>
+                                          <Font size="18.0" />
+                                       </font>
+                                    </Label>
+                                    <Label fx:id="locationLabel" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                                       <font>
+                                          <Font size="18.0" />
+                                       </font>
+                                    </Label>
+                                    <Label text="Size (LxW):" GridPane.rowIndex="3">
+                                       <font>
+                                          <Font size="18.0" />
+                                       </font>
+                                       <padding>
+                                          <Insets right="5.0" />
+                                       </padding>
+                                    </Label>
+                                    <Label fx:id="sizeLabel" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                                       <font>
+                                          <Font size="18.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </GridPane>
+                           </children>
+                        </VBox>
+                     </children>
+                  </AnchorPane>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+                     <children>
+                        <Label text="Drone Actions" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="5.0">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Label>
+                        <VBox prefHeight="200.0" prefWidth="100.0" spacing="20.0" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="40.0">
+                           <children>
+                              <Button fx:id="visitButton" mnemonicParsing="false" prefHeight="500.0" prefWidth="508.0" style="-fx-background-color: #4681f4;" text="Visit {selected item name}" textFill="WHITE">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                                 <effect>
+                                    <DropShadow />
+                                 </effect>
+                              </Button>
+                              <Button fx:id="scanButton" mnemonicParsing="false" prefHeight="500.0" prefWidth="508.0" style="-fx-background-color: #4681f4;" text="Scan Farm" textFill="WHITE">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                                 <effect>
+                                    <DropShadow />
+                                 </effect>
+                              </Button>
+                           </children>
+                        </VBox>
+                     </children>
+                  </AnchorPane>
+              </items>
+            </SplitPane>
+            <AnchorPane prefWidth="630.0" style="-fx-background-color: #d3d3d3;">
+               <children>
+                  <Label layoutX="91.0" layoutY="38.0" text="Visualization" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="5.0">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+                  <AnchorPane layoutX="5.0" layoutY="41.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #ffffff;" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="40.0">
+                     <effect>
+                        <InnerShadow />
+                     </effect>
+                  </AnchorPane>
+               </children>
+            </AnchorPane>
+         </children>
+      </HBox>
+   </children>
+</AnchorPane>
