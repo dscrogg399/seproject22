@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="580.0" prefWidth="580.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="agridrone.view.DialogController">
+<AnchorPane prefHeight="580.0" prefWidth="580.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="agridrone.view.DialogController">
    <children>
       <BorderPane layoutX="100.0" layoutY="100.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <bottom>
@@ -43,7 +43,7 @@
                                           <Font size="24.0" />
                                        </font>
                                     </Label>
-                                    <TextField>
+                                    <TextField fx:id="renameBox">
                                        <VBox.margin>
                                           <Insets left="30.0" right="150.0" />
                                        </VBox.margin>
@@ -68,7 +68,7 @@
                                           <Insets left="30.0" />
                                        </VBox.margin>
                                     </Label>
-                                    <TextField>
+                                    <TextField fx:id="xCoordBox">
                                        <VBox.margin>
                                           <Insets left="30.0" right="150.0" />
                                        </VBox.margin>
@@ -81,7 +81,7 @@
                                           <Insets left="30.0" />
                                        </VBox.margin>
                                     </Label>
-                                    <TextField>
+                                    <TextField fx:id="yCoordBox">
                                        <VBox.margin>
                                           <Insets left="30.0" right="150.0" />
                                        </VBox.margin>
@@ -105,7 +105,7 @@
                                           <Insets left="30.0" />
                                        </VBox.margin>
                                     </Label>
-                                    <TextField>
+                                    <TextField fx:id="priceBox">
                                        <VBox.margin>
                                           <Insets left="30.0" right="150.0" />
                                        </VBox.margin>
@@ -126,7 +126,7 @@
                                           <Font size="24.0" />
                                        </font>
                                     </Label>
-                                    <TextField>
+                                    <TextField fx:id="widthBox">
                                        <VBox.margin>
                                           <Insets right="150.0" />
                                        </VBox.margin>
@@ -136,7 +136,7 @@
                                           <Font size="24.0" />
                                        </font>
                                     </Label>
-                                    <TextField>
+                                    <TextField fx:id="lengthBox">
                                        <VBox.margin>
                                           <Insets right="150.0" />
                                        </VBox.margin>
@@ -163,7 +163,7 @@
                                           <Font size="18.0" />
                                        </font>
                                     </Label>
-                                    <TextField>
+                                    <TextField fx:id="newItemName">
                                        <VBox.margin>
                                           <Insets right="150.0" />
                                        </VBox.margin>
@@ -173,7 +173,7 @@
                                           <Font size="18.0" />
                                        </font>
                                     </Label>
-                                    <TextField>
+                                    <TextField fx:id="newItemX">
                                        <VBox.margin>
                                           <Insets right="150.0" />
                                        </VBox.margin>
@@ -183,7 +183,7 @@
                                           <Font size="18.0" />
                                        </font>
                                     </Label>
-                                    <TextField>
+                                    <TextField fx:id="newItemY">
                                        <VBox.margin>
                                           <Insets right="150.0" />
                                        </VBox.margin>
@@ -193,7 +193,7 @@
                                           <Font size="18.0" />
                                        </font>
                                     </Label>
-                                    <TextField>
+                                    <TextField fx:id="newItemPrice">
                                        <VBox.margin>
                                           <Insets right="150.0" />
                                        </VBox.margin>
@@ -203,7 +203,7 @@
                                           <Font size="18.0" />
                                        </font>
                                     </Label>
-                                    <TextField>
+                                    <TextField fx:id="newItemWidth">
                                        <VBox.margin>
                                           <Insets right="150.0" />
                                        </VBox.margin>
@@ -213,7 +213,7 @@
                                           <Font size="18.0" />
                                        </font>
                                     </Label>
-                                    <TextField>
+                                    <TextField fx:id="newItemLength">
                                        <VBox.margin>
                                           <Insets right="150.0" />
                                        </VBox.margin>
@@ -237,7 +237,7 @@
                                           <Font size="18.0" />
                                        </font>
                                     </Label>
-                                    <TextField>
+                                    <TextField fx:id="newContainerName">
                                        <VBox.margin>
                                           <Insets right="150.0" />
                                        </VBox.margin>
@@ -247,7 +247,7 @@
                                           <Font size="18.0" />
                                        </font>
                                     </Label>
-                                    <TextField>
+                                    <TextField fx:id="newContainerX">
                                        <VBox.margin>
                                           <Insets right="150.0" />
                                        </VBox.margin>
@@ -257,7 +257,7 @@
                                           <Font size="18.0" />
                                        </font>
                                     </Label>
-                                    <TextField>
+                                    <TextField fx:id="newContainerY">
                                        <VBox.margin>
                                           <Insets right="150.0" />
                                        </VBox.margin>
@@ -267,7 +267,7 @@
                                           <Font size="18.0" />
                                        </font>
                                     </Label>
-                                    <TextField>
+                                    <TextField fx:id="newContainerPrice">
                                        <VBox.margin>
                                           <Insets right="150.0" />
                                        </VBox.margin>
@@ -277,7 +277,7 @@
                                           <Font size="18.0" />
                                        </font>
                                     </Label>
-                                    <TextField>
+                                    <TextField fx:id="newContainerWidth">
                                        <VBox.margin>
                                           <Insets right="150.0" />
                                        </VBox.margin>
@@ -287,7 +287,7 @@
                                           <Font size="18.0" />
                                        </font>
                                     </Label>
-                                    <TextField>
+                                    <TextField fx:id="newContainerLength">
                                        <VBox.margin>
                                           <Insets right="150.0" />
                                        </VBox.margin>
