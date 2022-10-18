@@ -109,7 +109,11 @@ public abstract class ItemAbstract {
 	
 	public void delete() {
 		
-
+		if (this instanceof Drone) {
+			System.out.println("Cannot delete Drone");
+			return;
+		}
+	
 		if (this.parentContainer != null) {
 			//parent of current item
 			ItemAbstract newParent = this.parentContainer;
@@ -125,8 +129,10 @@ public abstract class ItemAbstract {
 			
 			//deleting current item
 			this.parentContainer.contents.remove(this);
+			return;
 		} else {
 			System.out.println("Cannot delete Farm item container");
+			return;
 		}
 		
 	}
