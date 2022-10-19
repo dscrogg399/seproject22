@@ -33,6 +33,7 @@ import javafx.util.Callback;
 import java.io.IOException;
 
 import agridrone.MainApp;
+import agridrone.model.Drone;
 import agridrone.model.Item;
 import agridrone.model.ItemAbstract;
 import agridrone.model.ItemContainer;
@@ -121,7 +122,7 @@ public class DashboardController {
 		ItemContainer field = new ItemContainer("Field", 50, 50, 100, 100, 0);
 		Item tractor = new Item("Tractor", 75, 75, 5, 5, 15000);
 		Item cow = new Item("Cow", 50, 40, 2, 2, 500);
-		Item drone = new Item("Drone", 30, 30, 1, 1, 1000);
+		Drone drone = new Drone("Drone", 30, 30, 1, 1, 1000);
 		ItemContainer milkStore = new ItemContainer("Milk Storage", 11, 11, 3, 3, 100);
 		Item milk = new Item("Milk", 12, 12, 1, 1, 3);
 		
@@ -164,48 +165,38 @@ public class DashboardController {
 	
 
 	
-	private ContextMenu makeItemContextMenu() {
+	private ContextMenu makeContextMenu(int type) {
 		//Item context menu
-		ContextMenu itemContextMenu = new ContextMenu();
+		ContextMenu contextMenu = new ContextMenu();
 		//item right click menu actions
-		MenuItem itemMenuAction1 = new MenuItem("Rename");
-		itemMenuAction1.setOnAction(renameEvent);
-		MenuItem itemMenuAction2 = new MenuItem("Change Location");
-		itemMenuAction2.setOnAction(changeLocationEvent);
-		MenuItem itemMenuAction3 = new MenuItem("Change Price");
-		itemMenuAction3.setOnAction(changePriceEvent);
-		MenuItem itemMenuAction4 = new MenuItem("Change Dimensions");
-		itemMenuAction4.setOnAction(changeDimensionsEvent);
-		MenuItem itemMenuAction5 = new MenuItem("Delete");
-		itemMenuAction5.setOnAction(deleteItemEvent);
+		MenuItem menuAction1 = new MenuItem("Rename");
+		menuAction1.setOnAction(renameEvent);
+		MenuItem menuAction2 = new MenuItem("Change Location");
+		menuAction2.setOnAction(changeLocationEvent);
+		MenuItem menuAction3 = new MenuItem("Change Price");
+		menuAction3.setOnAction(changePriceEvent);
+		MenuItem menuAction4 = new MenuItem("Change Dimensions");
+		menuAction4.setOnAction(changeDimensionsEvent);
+		MenuItem menuAction5 = new MenuItem("Add Item");
+		menuAction5.setOnAction(addItemEvent);
+		MenuItem menuAction6 = new MenuItem("Add Item Containter");
+		menuAction6.setOnAction(addContainerEvent);
+		MenuItem menuAction7 = new MenuItem("Delete");
+		menuAction7.setOnAction(deleteItemEvent);
 		
-		itemContextMenu.getItems().addAll(itemMenuAction1, itemMenuAction2, itemMenuAction3, itemMenuAction4, itemMenuAction5);
-		return itemContextMenu;
-	}
-	
-	private ContextMenu makeContContextMenu() {
-		//Container context menu
-		ContextMenu contContextMenu = new ContextMenu();
-		//menu action events
-
-		//container right click menu actions
-		MenuItem containerMenuAction1 = new MenuItem("Rename");
-		containerMenuAction1.setOnAction(renameEvent);
-		MenuItem containerMenuAction2 = new MenuItem("Change Location");
-		containerMenuAction2.setOnAction(changeLocationEvent);
-		MenuItem containerMenuAction3 = new MenuItem("Change Price");
-		containerMenuAction3.setOnAction(changePriceEvent);
-		MenuItem containerMenuAction4 = new MenuItem("Change Dimensions");
-		containerMenuAction4.setOnAction(changeDimensionsEvent);
-		MenuItem containerMenuAction5 = new MenuItem("Add Item");
-		containerMenuAction5.setOnAction(addItemEvent);
-		MenuItem containerMenuAction6 = new MenuItem("Add Item Containter");
-		containerMenuAction6.setOnAction(addContainerEvent);
-		MenuItem containerMenuAction7 = new MenuItem("Delete");
-		containerMenuAction7.setOnAction(deleteItemEvent);
+		switch(type) {
+		case 1:
+			contextMenu.getItems().addAll(menuAction1, menuAction2, menuAction3, menuAction4, menuAction7);
+			break;
+		case 2:
+			contextMenu.getItems().addAll(menuAction1, menuAction2, menuAction3, menuAction4, menuAction5, menuAction6, menuAction7);
+			break;
+		case 3:
+			contextMenu.getItems().addAll(menuAction1, menuAction2, menuAction3, menuAction4);
+			break;
+		}
 		
-		contContextMenu.getItems().addAll(containerMenuAction1, containerMenuAction2, containerMenuAction3, containerMenuAction4, containerMenuAction5, containerMenuAction6, containerMenuAction7);
-		return contContextMenu;
+		return contextMenu;
 	}
 	
 	private final class TreeCellFactory extends TreeCell<ItemAbstract> {
@@ -228,11 +219,15 @@ public class DashboardController {
 			
 			//set the context menu based off item type
 			if (item instanceof Item) {
-				setContextMenu(makeItemContextMenu());
+				setContextMenu(makeContextMenu(1));
 			}
 			
 			if (item instanceof ItemContainer) {
-				setContextMenu(makeContContextMenu());
+				setContextMenu(makeContextMenu(2));
+			}
+			
+			if(item instanceof Drone) {
+				setContextMenu(makeContextMenu(3));
 			}
 		}
 	}
