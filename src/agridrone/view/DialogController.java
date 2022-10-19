@@ -121,6 +121,8 @@ public class DialogController {
 	@FXML
 	private Label inputErrorAddItemContainer;
 	
+	private static int tabNum = -1;
+	
 
 
 	private static DialogController dialogController;
@@ -149,206 +151,239 @@ public class DialogController {
 	public void cancelDialog() {
 		closeStage();
 	}
-
+	
+	
 	public void buildDialogBox(int c, TreeItem<ItemAbstract> item) {
-		SingleSelectionModel<Tab> selectionModel = dialogContent.getSelectionModel();
+		//initial tab
+		tabNum = c;
+		//set the validation and action handlers
+		setAction(item);
+		
+		//set the title of the window
 		dialogBox.setTitle(item.getValue().getName() + " Actions");
 
+		//if the tree item is an Item literal
 		if (item.getValue() instanceof Item) {
+			//disable the add item and add item container tabs
 			addItemTab.setDisable(true);
 			addItemContTab.setDisable(true);
-		} else {
+		} 
+		//otherwise, set these tabs to enabled
+		else {
 			addItemTab.setDisable(false);
 			addItemContTab.setDisable(false);
 		}
+		//on tab change
+		dialogContent.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Tab>() {
 
-		// switch case for building dialog box
-		switch (c) {
-		// rename
-		case 0:
-			selectionModel.select(c);
+	
+			@Override
+			public void changed(ObservableValue<? extends Tab> observable, Tab oldValue, Tab newValue) {
+				//set the new tab number
+				DialogController.tabNum = dialogContent.getSelectionModel().getSelectedIndex();
+				//set the new validation and action handler
+				setAction(item);
 
-			applyButton.setOnAction(new EventHandler<ActionEvent>() {
-
-				@Override
-				public void handle(ActionEvent e) {
-					String newName = renameBox.getText();
-					item.getValue().setName(newName);
-					cancelDialog();
-				}
-
-			});
-			break;
-		// change location
-		case 1:
-			selectionModel.select(c);
-
-			applyButton.setOnAction(new EventHandler<ActionEvent>() {
-
-				@Override
-				public void handle(ActionEvent e) {
-
-					// input error catching
-					if (xCoordBox.getText() == null || yCoordBox.getText() == null) {
-						inputErrorLocation.setVisible(true);
-					}
-					try {
-						int xTest = Integer.parseInt(xCoordBox.getText());
-						int yTest = Integer.parseInt(yCoordBox.getText());
-
-					} catch (NumberFormatException nfe) {
-						inputErrorLocation.setVisible(true);
-					}
-
-					int newX = Integer.parseInt(xCoordBox.getText());
-					item.getValue().setLocationX(newX);
-					int newY = Integer.parseInt(yCoordBox.getText());
-					item.getValue().setLocationY(newY);
-					cancelDialog();
-				}
-
-			});
-
-			break;
-		// change price
-		case 2:
-			selectionModel.select(c);
-
-			applyButton.setOnAction(new EventHandler<ActionEvent>() {
-
-
-				@Override
-				public void handle(ActionEvent e) {
-
-					if (priceBox.getText() == null) {
-						inputErrorPrice.setVisible(true);
-					}
-					try {
-						Float tryPrice = Float.parseFloat(priceBox.getText());
-
-					} catch (NumberFormatException nfe) {
-						inputErrorPrice.setVisible(true);
-					}
-					Float newPrice = Float.parseFloat(priceBox.getText());
-					item.getValue().setPrice(newPrice);
-					cancelDialog();
-
-				}
-
-			});
-
-			break;
-		// change dimensions
-		case 3:
-			selectionModel.select(c);
-			applyButton.setOnAction(new EventHandler<ActionEvent>() {
 				
-				@Override
-				public void handle(ActionEvent e) {
-					
-					if (lengthBox.getText() == null || widthBox.getText() == null) {
-						inputErrorDimensions.setVisible(true);
-					}
-					try {
-						int testL = Integer.parseInt(lengthBox.getText());
-						int testW = Integer.parseInt(widthBox.getText());
+			}
+		});
+
+
+
+	}
+	
+	public void setAction(TreeItem<ItemAbstract> item) {
+		
+		SingleSelectionModel<Tab> selectionModel = dialogContent.getSelectionModel();
+		// switch case for building dialog box
+				switch (tabNum) {
+				// rename
+				case 0:
+					selectionModel.select(tabNum);
+
+					applyButton.setOnAction(new EventHandler<ActionEvent>() {
+
+						@Override
+						public void handle(ActionEvent e) {
+							String newName = renameBox.getText();
+							item.getValue().setName(newName);
+							cancelDialog();
+						}
+
+					});
+					break;
+				// change location
+				case 1:
+					selectionModel.select(tabNum);
+
+					applyButton.setOnAction(new EventHandler<ActionEvent>() {
+
+						@Override
+						public void handle(ActionEvent e) {
+
+							// input error catching
+							if (xCoordBox.getText() == null || yCoordBox.getText() == null) {
+								inputErrorLocation.setVisible(true);
+							}
+							try {
+								int xTest = Integer.parseInt(xCoordBox.getText());
+								int yTest = Integer.parseInt(yCoordBox.getText());
+
+							} catch (NumberFormatException nfe) {
+								System.out.println("Location Error: " + nfe);
+								inputErrorLocation.setVisible(true);
+							}
+
+							int newX = Integer.parseInt(xCoordBox.getText());
+							item.getValue().setLocationX(newX);
+							int newY = Integer.parseInt(yCoordBox.getText());
+							item.getValue().setLocationY(newY);
+							cancelDialog();
+						}
+
+					});
+
+					break;
+				// change price
+				case 2:
+					selectionModel.select(tabNum);
+
+					applyButton.setOnAction(new EventHandler<ActionEvent>() {
+
+
+						@Override
+						public void handle(ActionEvent e) {
+
+							if (priceBox.getText() == null) {
+								inputErrorPrice.setVisible(true);
+							}
+							try {
+								Float tryPrice = Float.parseFloat(priceBox.getText());
+
+							} catch (NumberFormatException nfe) {
+								System.out.println("Price Error: " + nfe);
+								inputErrorPrice.setVisible(true);
+							}
+							Float newPrice = Float.parseFloat(priceBox.getText());
+							item.getValue().setPrice(newPrice);
+							cancelDialog();
+
+						}
+
+					});
+
+					break;
+				// change dimensions
+				case 3:
+					selectionModel.select(tabNum);
+					applyButton.setOnAction(new EventHandler<ActionEvent>() {
 						
-					} catch(NumberFormatException nfe) {
-						inputErrorDimensions.setVisible(true);
-					}
+						@Override
+						public void handle(ActionEvent e) {
+							
+							if (lengthBox.getText() == null || widthBox.getText() == null) {
+								inputErrorDimensions.setVisible(true);
+							}
+							try {
+								int testL = Integer.parseInt(lengthBox.getText());
+								int testW = Integer.parseInt(widthBox.getText());
+								
+							} catch(NumberFormatException nfe) {
+								System.out.println("Dimensions Error: " + nfe);
+								inputErrorDimensions.setVisible(true);
+							}
 
-					int newLength = Integer.parseInt(lengthBox.getText());
-					item.getValue().setLength(newLength);
-					int newWidth = Integer.parseInt(widthBox.getText());
-					item.getValue().setWidth(newWidth);
-					cancelDialog();
+							int newLength = Integer.parseInt(lengthBox.getText());
+							item.getValue().setLength(newLength);
+							int newWidth = Integer.parseInt(widthBox.getText());
+							item.getValue().setWidth(newWidth);
+							cancelDialog();
 
+						}
+
+					});
+
+					break;
+				// add item
+				case 4:
+					selectionModel.select(tabNum);
+
+					applyButton.setOnAction(new EventHandler<ActionEvent>() {
+
+						@Override
+						public void handle(ActionEvent e) {
+							
+
+							
+							if (newItemPrice.getText() == null || newItemY.getText() == null || newItemWidth.getText() == null || newItemLength.getText() == null || newItemPrice.getText() == null) {
+								inputErrorAddItem.setVisible(true);
+							}
+							
+							try {
+								int x = Integer.parseInt(newItemPrice.getText());
+								int y = Integer.parseInt(newItemY.getText());
+								int w = Integer.parseInt(newItemWidth.getText());
+								int l = Integer.parseInt(newItemLength.getText());
+								int p = Integer.parseInt(newItemPrice.getText());
+							} catch (NumberFormatException nfe) {
+								System.out.println("Add Item Error: " + nfe);
+								inputErrorAddItem.setVisible(true);
+							}
+							
+							int x = Integer.parseInt(newItemX.getText());
+							int y = Integer.parseInt(newItemY.getText());
+							int w = Integer.parseInt(newItemWidth.getText());
+							int l = Integer.parseInt(newItemLength.getText());
+							int p = Integer.parseInt(newItemPrice.getText());
+
+							Item newItem = new Item(newItemName.getText(), x, y, w, l, p);
+							item.getValue().addItemAbstract(newItem);
+							cancelDialog();
+
+						}
+
+					});
+
+					break;
+				// add item container
+				case 5:
+					selectionModel.select(tabNum);
+					applyButton.setOnAction(new EventHandler<ActionEvent>() {
+
+						@Override
+						public void handle(ActionEvent e) {
+							
+							if (newContainerX.getText() == null || newContainerY.getText() == null || newContainerWidth.getText() == null || newContainerLength.getText() == null || newContainerPrice.getText() == null) {
+								inputErrorAddItemContainer.setVisible(true);
+							}
+							
+						try {
+							int x = Integer.parseInt(newContainerX.getText());
+							int y = Integer.parseInt(newContainerY.getText());
+							int w = Integer.parseInt(newContainerWidth.getText());
+							int l = Integer.parseInt(newContainerLength.getText());
+							int p = Integer.parseInt(newContainerPrice.getText());
+							
+						}catch(NumberFormatException nfe) {
+							System.out.println("Add Container Error: " + nfe);
+							inputErrorAddItemContainer.setVisible(true);
+						}
+
+							int x = Integer.parseInt(newContainerX.getText());
+							int y = Integer.parseInt(newContainerY.getText());
+							int w = Integer.parseInt(newContainerWidth.getText());
+							int l = Integer.parseInt(newContainerLength.getText());
+							int p = Integer.parseInt(newContainerPrice.getText());
+
+							ItemContainer newContainer = new ItemContainer(newContainerName.getText(), x, y, w, l, p);
+							item.getValue().addItemAbstract(newContainer); 
+																		
+							cancelDialog();
+
+						}
+
+					});
+					break;
 				}
-
-			});
-
-			break;
-		// add item
-		case 4:
-			selectionModel.select(c);
-
-			applyButton.setOnAction(new EventHandler<ActionEvent>() {
-
-				@Override
-				public void handle(ActionEvent e) {
-					
-
-					
-					if (newItemPrice.getText() == null || newItemY.getText() == null || newItemWidth.getText() == null || newItemLength.getText() == null || newItemPrice.getText() == null) {
-						inputErrorAddItem.setVisible(true);
-					}
-					
-					try {
-						int x = Integer.parseInt(newItemPrice.getText());
-						int y = Integer.parseInt(newItemY.getText());
-						int w = Integer.parseInt(newItemWidth.getText());
-						int l = Integer.parseInt(newItemLength.getText());
-						int p = Integer.parseInt(newItemPrice.getText());
-					} catch (NumberFormatException nfe) {
-						inputErrorAddItem.setVisible(true);
-					}
-					
-					int x = Integer.parseInt(newItemX.getText());
-					int y = Integer.parseInt(newItemY.getText());
-					int w = Integer.parseInt(newItemWidth.getText());
-					int l = Integer.parseInt(newItemLength.getText());
-					int p = Integer.parseInt(newItemPrice.getText());
-
-					Item newItem = new Item(newItemName.getText(), x, y, w, l, p);
-					item.getValue().addItemAbstract(newItem);
-					cancelDialog();
-
-				}
-
-			});
-
-			break;
-		// add item container
-		case 5:
-			selectionModel.select(c);
-			applyButton.setOnAction(new EventHandler<ActionEvent>() {
-
-				@Override
-				public void handle(ActionEvent e) {
-					
-					if (newContainerX.getText() == null || newContainerY.getText() == null || newContainerWidth.getText() == null || newContainerLength.getText() == null || newContainerPrice.getText() == null) {
-						inputErrorAddItemContainer.setVisible(true);
-					}
-					
-				try {
-					int x = Integer.parseInt(newContainerX.getText());
-					int y = Integer.parseInt(newContainerY.getText());
-					int w = Integer.parseInt(newContainerWidth.getText());
-					int l = Integer.parseInt(newContainerLength.getText());
-					int p = Integer.parseInt(newContainerPrice.getText());
-					
-				}catch(NumberFormatException nfe) {
-					inputErrorAddItemContainer.setVisible(true);
-				}
-
-					int x = Integer.parseInt(newContainerX.getText());
-					int y = Integer.parseInt(newContainerY.getText());
-					int w = Integer.parseInt(newContainerWidth.getText());
-					int l = Integer.parseInt(newContainerLength.getText());
-					int p = Integer.parseInt(newContainerPrice.getText());
-
-					ItemContainer newContainer = new ItemContainer(newContainerName.getText(), x, y, w, l, p);
-					item.getValue().addItemAbstract(newContainer); 
-																
-					cancelDialog();
-
-				}
-
-			});
-
-			break;
-
-		}
-
 	}
 }
