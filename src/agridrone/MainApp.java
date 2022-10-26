@@ -34,7 +34,7 @@ public class MainApp extends Application {
 	
 	private Stage primaryStage;
 	private BorderPane rootLayout;
-	private ItemContainer farm = new ItemContainer("Farm", 0, 0, 600, 800, 200000);
+	private ItemContainer farm = new ItemContainer("Farm", 0, 0, 600, 800, (float) 200000);
 	
 //	constructor
 	public MainApp() {

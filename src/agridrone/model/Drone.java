@@ -2,7 +2,7 @@ package agridrone.model;
 
 public class Drone extends Item{
 	
-	public Drone(String name, int x, int y, int w, int l, int price) {
+	public Drone(String name, int x, int y, int w, int l, Float price) {
 		super(name, x, y, w, l, price);
 	}
 	

@@ -13,7 +13,7 @@ public abstract class ItemAbstract {
 	private ItemAbstract parentContainer;
 	private ObservableList<ItemAbstract> contents = FXCollections.observableArrayList();
 	
-	public ItemAbstract(String name, int x, int y, int w, int l, int price) {
+	public ItemAbstract(String name, int x, int y, int w, int l, Float price) {
 		this.name = name;
 		this.locationX = x;
 		this.locationY = y;

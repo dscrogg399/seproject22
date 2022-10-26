@@ -116,15 +116,15 @@ public class DashboardController {
 	public void initialize() {
 		
 		//initial dummy data
-		farm = new ItemContainer("Farm", 0, 0, 600, 800, 200000);
-		ItemContainer barn = new ItemContainer("Barn", 10, 10, 100, 200, 10000);
-		ItemContainer commCent = new ItemContainer("Command Center", 20, 20, 40, 40, 1000);
-		ItemContainer field = new ItemContainer("Field", 50, 50, 100, 100, 0);
-		Item tractor = new Item("Tractor", 75, 75, 5, 5, 15000);
-		Item cow = new Item("Cow", 50, 40, 2, 2, 500);
-		Drone drone = new Drone("Drone", 30, 30, 1, 1, 1000);
-		ItemContainer milkStore = new ItemContainer("Milk Storage", 11, 11, 3, 3, 100);
-		Item milk = new Item("Milk", 12, 12, 1, 1, 3);
+		farm = new ItemContainer("Farm", 0, 0, 600, 800, (float) 200000);
+		ItemContainer barn = new ItemContainer("Barn", 10, 10, 100, 200, (float) 10000);
+		ItemContainer commCent = new ItemContainer("Command Center", 20, 20, 40, 40, (float) 1000);
+		ItemContainer field = new ItemContainer("Field", 50, 50, 100, 100, (float) 0);
+		Item tractor = new Item("Tractor", 75, 75, 5, 5, (float) 15000);
+		Item cow = new Item("Cow", 50, 40, 2, 2, (float) 500);
+		Drone drone = new Drone("Drone", 30, 30, 1, 1, (float) 1000);
+		ItemContainer milkStore = new ItemContainer("Milk Storage", 11, 11, 3, 3, (float) 100);
+		Item milk = new Item("Milk", 12, 12, 1, 1, (float) 3);
 		
 		barn.addItem(cow);
 		field.addItem(tractor);
