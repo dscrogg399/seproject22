@@ -342,7 +342,7 @@ public class DialogController {
 						Float p = Float.parseFloat(newItemPrice.getText());
 
 						Item newItem = new Item(newItemName.getText(), x, y, w, l, p);
-						item.getValue().addItemAbstract(newItem);
+						((ItemContainer) item.getValue()).addItemAbstract(newItem);
 						cancelDialog();
 
 					} else {
@@ -385,7 +385,7 @@ public class DialogController {
 						Float p = Float.parseFloat(newContainerPrice.getText());
 
 						ItemContainer newContainer = new ItemContainer(newContainerName.getText(), x, y, w, l, p);
-						item.getValue().addItemAbstract(newContainer);
+						((ItemContainer) item.getValue()).addItemAbstract(newContainer);
 
 						cancelDialog();
 
