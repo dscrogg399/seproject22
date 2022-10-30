@@ -10,10 +10,9 @@ public abstract class ItemAbstract {
 	private int width;
 	private int length;
 	private float price;
-	private ItemAbstract parentContainer;
-	private ObservableList<ItemAbstract> contents = FXCollections.observableArrayList();
+	private ItemContainer parentContainer;
 	
-	public ItemAbstract(String name, int x, int y, int w, int l, int price) {
+	public ItemAbstract(String name, int x, int y, int w, int l, Float price) {
 		this.name = name;
 		this.locationX = x;
 		this.locationY = y;
@@ -65,75 +64,26 @@ public abstract class ItemAbstract {
 		this.price = price;
 	}
 	
-	public ItemAbstract getParentContainer() {
+	public ItemContainer getParentContainer() {
 		return this.parentContainer;
 	}
-	public void setParentContainer(ItemAbstract parent) {
+	public void setParentContainer(ItemContainer parent) {
 		this.parentContainer = parent;
 	}
 	
-	public ObservableList<ItemAbstract> getContents() {
-		if (!(this instanceof Item)){
-			return this.contents;
-		}
-		return null;
-	}
-	public void addItemContainer(ItemContainer container) {
-		
-		if (!(this instanceof Item)) {
-			container.setParentContainer(this);
-			this.contents.add(container);
-		} else {
-			System.out.println("Items cannot hold containers");
-		}
-	}
+	public abstract void delete();
+	
+	
 
-	public void addItem(Item item) {
-		if(!(this instanceof Item)) {
-			item.setParentContainer(this);
-			this.contents.add(item);
-		} else {
-			System.out.println("Items cannot hold other items");
-		}
-		
-	}
-	
-	public void addItemAbstract(ItemAbstract item) {
-		if(!(this instanceof Item)) {
-			item.setParentContainer(this);
-			this.contents.add(item);
-		} else {
-			System.out.println("Items cannot hold other objects");
-		}
-	}
-	
-	public void delete() {
+	//Delete method for items
+	public void lete() {
 		
 		if (this instanceof Drone) {
 			System.out.println("Cannot delete Drone");
 			return;
 		}
 	
-		if (this.parentContainer != null) {
-			//parent of current item
-			ItemAbstract newParent = this.parentContainer;
 
-			
-			//if container list is not empty, set all sub containers' parents to parent of current item
-			if (this.contents != null) {
-				for (ItemAbstract cont : this.contents) {
-					
-					newParent.addItemAbstract(cont);
-				}
-			}
-			
-			//deleting current item
-			this.parentContainer.contents.remove(this);
-			return;
-		} else {
-			System.out.println("Cannot delete Farm item container");
-			return;
-		}
 		
 	}
 	

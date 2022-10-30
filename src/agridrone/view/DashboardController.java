@@ -1,37 +1,29 @@
 package agridrone.view;
 
-import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.fxml.LoadException;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ContextMenu;
-import javafx.scene.control.DialogPane;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
-import javafx.scene.control.SplitPane;
 import javafx.scene.control.TreeCell;
 import javafx.scene.control.TreeItem;
-import javafx.scene.control.TreeTableColumn;
-import javafx.scene.control.TreeTableView;
 import javafx.scene.control.TreeView;
-import javafx.scene.input.MouseEvent;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Text;
 import javafx.stage.Modality;
-import javafx.stage.Popup;
 import javafx.stage.Stage;
-import javafx.util.Callback;
-
 import java.io.IOException;
-
 import agridrone.MainApp;
 import agridrone.model.Drone;
 import agridrone.model.Item;
@@ -61,6 +53,33 @@ public class DashboardController {
 	@FXML
 	private Button visitButton;
 	
+	@FXML
+    private Button parentButton;
+	
+	@FXML
+	private Button scanButton;
+	
+	@FXML
+	private AnchorPane myVisual;
+	
+	private Drone drone;
+	
+	private ItemContainer commCent;
+	
+	private ImageView ImageBox = new ImageView(new Image("Drone.png"));
+	
+	//singleton stuff
+	private static final DashboardController singleton = new DashboardController();
+	public final int WINDOW_WIDTH = 1260;
+	public final int WINDOW_HEIGHT = 960;
+	
+	static public DashboardController getSingleton() {
+		return DashboardController.singleton;
+	}
+
+	public DashboardController() {
+		
+	}
 	
 	
 	//main app reference
@@ -108,33 +127,15 @@ public class DashboardController {
 	};
 	
 	
-	
-	//constructor
-	public DashboardController() {}
-	
 	@FXML
 	public void initialize() {
-		
-		//initial dummy data
-		farm = new ItemContainer("Farm", 0, 0, 600, 800, 200000);
-		ItemContainer barn = new ItemContainer("Barn", 10, 10, 100, 200, 10000);
-		ItemContainer commCent = new ItemContainer("Command Center", 20, 20, 40, 40, 1000);
-		ItemContainer field = new ItemContainer("Field", 50, 50, 100, 100, 0);
-		Item tractor = new Item("Tractor", 75, 75, 5, 5, 15000);
-		Item cow = new Item("Cow", 50, 40, 2, 2, 500);
-		Drone drone = new Drone("Drone", 30, 30, 1, 1, 1000);
-		ItemContainer milkStore = new ItemContainer("Milk Storage", 11, 11, 3, 3, 100);
-		Item milk = new Item("Milk", 12, 12, 1, 1, 3);
-		
-		barn.addItem(cow);
-		field.addItem(tractor);
-		commCent.addItem(drone);
-		milkStore.addItem(milk);
-		barn.addItemContainer(milkStore);
-		
-		farm.addItemContainer(barn);
-		farm.addItemContainer(commCent);
-		farm.addItemContainer(field);
+		//initial farm, comm center and drone data
+        farm = new ItemContainer("Farm", 0,0, 600, 810, (float)200000);
+		commCent = new ItemContainer("Command Center", 10, 10, 90, 90, (float)1000);
+		drone = new Drone("Drone", commCent.getLocationX() + 5, commCent.getLocationY() + 5, 80, 80, (float)1000);
+        commCent.addItemAbstract(drone);
+        farm.addItemAbstract(commCent);
+
 		
 		renderTree();
 		
@@ -156,14 +157,40 @@ public class DashboardController {
 				
 			}
 		});
+
+		
+		EventHandler<ActionEvent> scanFarm = new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent e) {
+				drone.scanFarm(myVisual.getPrefHeight(), myVisual.getPrefWidth(), ImageBox, scanButton);
+				
+			}
+			
+		};
+		
+		EventHandler<ActionEvent> gotoItemFarm = new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent e) {
+				drone.gotoItem(itemList.getSelectionModel().getSelectedItem().getValue(), ImageBox, scanButton);
+			}
+		};
+		
+		EventHandler<ActionEvent> gotoParentFarm = new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent e) {
+				drone.gotoParent(ImageBox, scanButton);
+			}
+		};
+		scanButton.setOnAction(scanFarm);
+		visitButton.setOnAction(gotoItemFarm);
+		parentButton.setOnAction(gotoParentFarm);
 	}
 	
 	//get currently selected TreeItem
 	public TreeItem<ItemAbstract> getSelected() {
 		return itemList.getSelectionModel().getSelectedItem();
 	}
-	
-
 	
 	private ContextMenu makeContextMenu(int type) {
 		//Item context menu
@@ -263,8 +290,15 @@ public class DashboardController {
 	
 	//render the tree based of the current state of this.farm
 	public void renderTree() {
-		TreeItem<ItemAbstract> root = getTreeChildren(this.farm);
-		itemList.setRoot(root);
+
+		myVisual.getChildren().clear();
+		ImageBox.setLayoutX(drone.getLocationX());
+		ImageBox.setLayoutY(drone.getLocationY());
+		ImageBox.setFitHeight(drone.getLength());
+		ImageBox.setFitWidth(drone.getWidth());
+        myVisual.getChildren().add(ImageBox);
+        TreeItem<ItemAbstract> root = getTreeChildren(this.farm);
+        itemList.setRoot(root);
 	}
 	
 
@@ -272,11 +306,28 @@ public class DashboardController {
 	public TreeItem<ItemAbstract> getTreeChildren(ItemAbstract item) {
 		//Parent node
 		TreeItem<ItemAbstract> parent = new TreeItem<>(item);
+		
+		//drawing rectangles
+        Rectangle rect = new Rectangle();
+        rect.setX(item.getLocationX());
+        rect.setY(item.getLocationY());
+        rect.setWidth(item.getWidth());
+        rect.setHeight(item.getLength());
+        rect.setStroke(Color.BLACK);
+        rect.setFill(Color.TRANSPARENT);
+        
+        Text text = new Text(item.getLocationX(),item.getLocationY(),item.getName());
+        if (!(item instanceof Drone)) {
+        	myVisual.getChildren().add(rect);
+            if (!(item.getName().equals("Farm"))) {
+            	myVisual.getChildren().add(text);
+            }
+        }
 
 		//if the item has children
-		if (item.getContents() != null) {
+		if (item instanceof ItemContainer) {
 			//for each child, create a child tree item, populate it recursively with getTreeChildren()
-			for (ItemAbstract cont : item.getContents()) {
+			for (ItemAbstract cont : ((ItemContainer) item).getContents()) {
 				TreeItem<ItemAbstract> child = getTreeChildren(cont);
 				parent.getChildren().add(child);
 			}

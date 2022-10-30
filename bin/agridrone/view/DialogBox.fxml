@@ -48,6 +48,11 @@
                                           <Insets left="30.0" right="150.0" />
                                        </VBox.margin>
                                     </TextField>
+                                    <Label fx:id="renameNull" text="Please enter a name!" textFill="RED" visible="false">
+                                       <VBox.margin>
+                                          <Insets left="320.0" />
+                                       </VBox.margin>
+                                    </Label>
                                  </children>
                               </VBox>
                            </children>
@@ -86,6 +91,11 @@
                                           <Insets left="30.0" right="150.0" />
                                        </VBox.margin>
                                     </TextField>
+                                    <Label fx:id="inputErrorLocation" prefHeight="17.0" prefWidth="149.0" text="All inputs must be numeric!" textFill="#b51111" visible="false">
+                                       <VBox.margin>
+                                          <Insets left="280.0" />
+                                       </VBox.margin>
+                                    </Label>
                                  </children>
                               </VBox>
                            </children></AnchorPane>
@@ -110,6 +120,11 @@
                                           <Insets left="30.0" right="150.0" />
                                        </VBox.margin>
                                     </TextField>
+                                    <Label fx:id="inputErrorPrice" prefHeight="17.0" prefWidth="167.0" text="All inputs must be numeric!" textFill="RED" visible="false">
+                                       <VBox.margin>
+                                          <Insets left="280.0" />
+                                       </VBox.margin>
+                                    </Label>
                                  </children>
                               </VBox>
                            </children></AnchorPane>
@@ -141,6 +156,11 @@
                                           <Insets right="150.0" />
                                        </VBox.margin>
                                     </TextField>
+                                    <Label fx:id="inputErrorDimensions" text="All inputs must be numeric!" textFill="RED" visible="false">
+                                       <padding>
+                                          <Insets left="250.0" />
+                                       </padding>
+                                    </Label>
                                  </children>
                                  <padding>
                                     <Insets left="30.0" />
@@ -218,6 +238,16 @@
                                           <Insets right="150.0" />
                                        </VBox.margin>
                                     </TextField>
+                                    <Label fx:id="itemNameNull" text="Please input a name!" textFill="RED" visible="false">
+                                       <VBox.margin>
+                                          <Insets left="285.0" />
+                                       </VBox.margin>
+                                    </Label>
+                                    <Label fx:id="inputErrorAddItem" text="Location, price, and dimensions must be numeric!" textFill="RED" visible="false">
+                                       <padding>
+                                          <Insets left="130.0" />
+                                       </padding>
+                                    </Label>
                                  </children>
                               </VBox>
                            </children></AnchorPane>
@@ -292,6 +322,16 @@
                                           <Insets right="150.0" />
                                        </VBox.margin>
                                     </TextField>
+                                    <Label fx:id="itemContainerNull" text="Please input a name!" textFill="RED" visible="false">
+                                       <VBox.margin>
+                                          <Insets left="285.0" />
+                                       </VBox.margin>
+                                    </Label>
+                                    <Label fx:id="inputErrorAddItemContainer" text="Location, price, and dimension must be numeric!" textFill="RED" visible="false">
+                                       <padding>
+                                          <Insets left="145.0" />
+                                       </padding>
+                                    </Label>
                                  </children>
                               </VBox>
                            </children></AnchorPane>

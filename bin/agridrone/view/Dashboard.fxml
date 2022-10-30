@@ -7,6 +7,8 @@
 <?import javafx.scene.control.TreeView?>
 <?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.effect.InnerShadow?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
@@ -15,14 +17,14 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="960.0" prefWidth="1260.0" style="-fx-background-color: #6a6a6a;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="agridrone.view.DashboardController">
+<AnchorPane maxHeight="960.0" maxWidth="1260.0" minHeight="960.0" minWidth="1260.0" prefHeight="960.0" prefWidth="1260.0" style="-fx-background-color: #6a6a6a;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="agridrone.view.DashboardController">
    <children>
-      <Label alignment="CENTER" layoutX="554.0" layoutY="25.0" text="Farm Dashboard" textFill="WHITE" AnchorPane.bottomAnchor="900.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <Label alignment="CENTER" minHeight="60.0" prefHeight="60.0" prefWidth="1265.0" text="Farm Dashboard" textFill="WHITE">
          <font>
             <Font size="48.0" />
          </font>
       </Label>
-      <HBox fx:id="controlPanel" alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="30.0" AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="75.0">
+      <HBox fx:id="controlPanel" alignment="CENTER" spacing="30.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="75.0">
          <children>
             <SplitPane dividerPositions="0.7" orientation="VERTICAL" prefWidth="530.0" style="-fx-background-color: #d3d3d3;">
               <items>
@@ -140,23 +142,38 @@
                                     <DropShadow />
                                  </effect>
                               </Button>
+                              <Button fx:id="parentButton" mnemonicParsing="false" prefHeight="500.0" prefWidth="508.0" style="-fx-background-color: #4681f4;" text="Return Drone to Command Center" textFill="WHITE">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                                 <effect>
+                                    <DropShadow />
+                                 </effect>
+                              </Button>
                            </children>
                         </VBox>
                      </children>
                   </AnchorPane>
               </items>
             </SplitPane>
-            <AnchorPane prefWidth="630.0" style="-fx-background-color: #d3d3d3;">
+            <AnchorPane prefHeight="855.0" prefWidth="630.0" style="-fx-background-color: #d3d3d3;">
                <children>
                   <Label layoutX="91.0" layoutY="38.0" text="Visualization" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="5.0">
                      <font>
                         <Font size="18.0" />
                      </font>
                   </Label>
-                  <AnchorPane layoutX="5.0" layoutY="41.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #ffffff;" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="40.0">
+                  <AnchorPane fx:id="myVisual" layoutX="5.0" layoutY="41.0" maxHeight="800.0" maxWidth="600.0" minHeight="800.0" minWidth="600.0" prefHeight="800.0" prefWidth="600.0" style="-fx-background-color: #ffffff;" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="40.0">
                      <effect>
                         <InnerShadow />
                      </effect>
+                     <children>
+                        <ImageView fx:id="ImageBox" fitHeight="50.0" fitWidth="50.0" layoutX="300.0" layoutY="300.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../Drone.png" />
+                           </image>
+                        </ImageView>
+                     </children>
                   </AnchorPane>
                </children>
             </AnchorPane>
