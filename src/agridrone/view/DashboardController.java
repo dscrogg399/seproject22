@@ -26,6 +26,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import agridrone.MainApp;
 import agridrone.model.Drone;
+import agridrone.model.Farm;
 import agridrone.model.Item;
 import agridrone.model.ItemAbstract;
 import agridrone.model.ItemContainer;
@@ -68,6 +69,12 @@ public class DashboardController {
 	
 	private ImageView ImageBox = new ImageView(new Image("Drone.png"));
 	
+	//main app reference
+	private MainApp mainApp;
+	
+	//main farm reference
+	private Farm farm;
+	
 	//singleton stuff
 	private static final DashboardController singleton = new DashboardController();
 	public final int WINDOW_WIDTH = 1260;
@@ -80,13 +87,6 @@ public class DashboardController {
 	public DashboardController() {
 		
 	}
-	
-	
-	//main app reference
-	private MainApp mainApp;
-	
-	//main farm reference
-	private ItemContainer farm;
 	
 	private EventHandler<ActionEvent> renameEvent = new EventHandler<ActionEvent>() {
 		public void handle(ActionEvent e) {
@@ -130,9 +130,9 @@ public class DashboardController {
 	@FXML
 	public void initialize() {
 		//initial farm, comm center and drone data
-        farm = new ItemContainer("Farm", 0,0, 600, 810, (float)200000);
-		commCent = new ItemContainer("Command Center", 10, 10, 90, 90, (float)1000);
-		drone = new Drone("Drone", commCent.getLocationX() + 5, commCent.getLocationY() + 5, 80, 80, (float)1000);
+        farm = Farm.getInstance();
+		commCent = new ItemContainer("Command Center", 10, 10, 90, 90, 20, (float)1000);
+		drone = new Drone("Drone", commCent.getLocationX() + 5, commCent.getLocationY() + 5, 80, 80, 5, (float)1000);
         commCent.addItemAbstract(drone);
         farm.addItemAbstract(commCent);
 
@@ -221,6 +221,8 @@ public class DashboardController {
 		case 3:
 			contextMenu.getItems().addAll(menuAction1, menuAction2, menuAction3, menuAction4);
 			break;
+		case 4:
+			contextMenu.getItems().addAll(menuAction5, menuAction6);
 		}
 		
 		return contextMenu;
@@ -255,6 +257,9 @@ public class DashboardController {
 			
 			if(item instanceof Drone) {
 				setContextMenu(makeContextMenu(3));
+			}
+			if (item instanceof Farm) {
+				setContextMenu(makeContextMenu(4));
 			}
 		}
 	}
@@ -317,11 +322,9 @@ public class DashboardController {
         rect.setFill(Color.TRANSPARENT);
         
         Text text = new Text(item.getLocationX(),item.getLocationY(),item.getName());
-        if (!(item instanceof Drone)) {
+        if (!(item instanceof Drone || item instanceof Farm)) {
         	myVisual.getChildren().add(rect);
-            if (!(item.getName().equals("Farm"))) {
-            	myVisual.getChildren().add(text);
-            }
+        	myVisual.getChildren().add(text);
         }
 
 		//if the item has children

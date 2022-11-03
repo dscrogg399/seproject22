@@ -9,15 +9,17 @@ public abstract class ItemAbstract {
 	private int locationY;
 	private int width;
 	private int length;
+	private int height;
 	private float price;
 	private ItemContainer parentContainer;
 	
-	public ItemAbstract(String name, int x, int y, int w, int l, Float price) {
+	public ItemAbstract(String name, int x, int y, int w, int l, int h, Float price) {
 		this.name = name;
 		this.locationX = x;
 		this.locationY = y;
 		this.width = w;
 		this.length = l;
+		this.height = h;
 		this.price = price;
 		this.parentContainer = null;
 	}
@@ -57,6 +59,13 @@ public abstract class ItemAbstract {
 		this.length = l;
 	}
 	
+	public int getHeight() {
+		return this.height;
+	}
+	public void setHeight(int h) {
+		this.height = h;
+	}
+	
 	public float getPrice() {
 		return this.price;
 	}
@@ -72,20 +81,6 @@ public abstract class ItemAbstract {
 	}
 	
 	public abstract void delete();
-	
-	
-
-	//Delete method for items
-	public void lete() {
-		
-		if (this instanceof Drone) {
-			System.out.println("Cannot delete Drone");
-			return;
-		}
-	
-
-		
-	}
 	
 	
 

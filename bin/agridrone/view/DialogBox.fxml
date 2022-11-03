@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="580.0" prefWidth="580.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="agridrone.view.DialogController">
+<AnchorPane prefHeight="580.0" prefWidth="580.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="agridrone.view.DialogController">
    <children>
       <BorderPane layoutX="100.0" layoutY="100.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <bottom>
@@ -156,6 +156,16 @@
                                           <Insets right="150.0" />
                                        </VBox.margin>
                                     </TextField>
+                                    <Label text="New Height">
+                                       <font>
+                                          <Font size="24.0" />
+                                       </font>
+                                    </Label>
+                                    <TextField fx:id="heightBox">
+                                       <VBox.margin>
+                                          <Insets right="150.0" />
+                                       </VBox.margin>
+                                    </TextField>
                                     <Label fx:id="inputErrorDimensions" text="All inputs must be numeric!" textFill="RED" visible="false">
                                        <padding>
                                           <Insets left="250.0" />
@@ -170,10 +180,10 @@
                     </content>
                   </Tab>
                   <Tab fx:id="addItemTab" text="Add Item">
-                    <content>
+                     <content>
                       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                            <children>
-                              <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="100.0" spacing="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                              <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="100.0" spacing="7.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                  <padding>
                                     <Insets left="30.0" />
                                  </padding>
@@ -238,6 +248,16 @@
                                           <Insets right="150.0" />
                                        </VBox.margin>
                                     </TextField>
+                                    <Label text="Item Height">
+                                       <font>
+                                          <Font size="18.0" />
+                                       </font>
+                                    </Label>
+                                    <TextField fx:id="newItemHeight">
+                                       <VBox.margin>
+                                          <Insets right="150.0" />
+                                       </VBox.margin>
+                                    </TextField>
                                     <Label fx:id="itemNameNull" text="Please input a name!" textFill="RED" visible="false">
                                        <VBox.margin>
                                           <Insets left="285.0" />
@@ -250,14 +270,15 @@
                                     </Label>
                                  </children>
                               </VBox>
-                           </children></AnchorPane>
-                    </content>
+                           </children>
+                        </AnchorPane>
+                     </content>
                   </Tab>
                   <Tab fx:id="addItemContTab" text="Add Item Container">
                     <content>
                       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                            <children>
-                              <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="100.0" spacing="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                              <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="100.0" spacing="7.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                  <padding>
                                     <Insets left="30.0" />
                                  </padding>
@@ -318,6 +339,16 @@
                                        </font>
                                     </Label>
                                     <TextField fx:id="newContainerLength">
+                                       <VBox.margin>
+                                          <Insets right="150.0" />
+                                       </VBox.margin>
+                                    </TextField>
+                                    <Label text="Item Container Height">
+                                       <font>
+                                          <Font size="18.0" />
+                                       </font>
+                                    </Label>
+                                    <TextField fx:id="newContainerHeight">
                                        <VBox.margin>
                                           <Insets right="150.0" />
                                        </VBox.margin>
