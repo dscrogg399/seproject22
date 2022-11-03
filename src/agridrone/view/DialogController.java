@@ -69,6 +69,9 @@ public class DialogController {
 
 	@FXML
 	private TextField lengthBox;
+	
+	@FXML
+	private TextField heightBox;
 
 	@FXML
 	private TextField newItemName;
@@ -87,6 +90,9 @@ public class DialogController {
 
 	@FXML
 	private TextField newItemLength;
+	
+	@FXML
+	private TextField newItemHeight;
 
 	@FXML
 	private TextField newContainerName;
@@ -105,6 +111,9 @@ public class DialogController {
 
 	@FXML
 	private TextField newContainerLength;
+	
+	@FXML
+	private TextField newContainerHeight;
 
 	@FXML
 	private Label inputErrorLocation;
@@ -202,7 +211,7 @@ public class DialogController {
 		// rename
 		case 0:
 			selectionModel.select(tabNum);
-
+			renameBox.setPromptText(item.getValue().getName());
 			applyButton.setOnAction(new EventHandler<ActionEvent>() {
 
 				@Override
@@ -220,7 +229,8 @@ public class DialogController {
 		// change location
 		case 1:
 			selectionModel.select(tabNum);
-
+			xCoordBox.setPromptText(Integer.toString(item.getValue().getLocationX()));
+			yCoordBox.setPromptText(Integer.toString(item.getValue().getLocationY()));
 			applyButton.setOnAction(new EventHandler<ActionEvent>() {
 
 				@Override
@@ -231,8 +241,8 @@ public class DialogController {
 						inputErrorLocation.setVisible(true);
 					}
 					try {
-						int xTest = Integer.parseInt(xCoordBox.getText());
-						int yTest = Integer.parseInt(yCoordBox.getText());
+						int newX = Integer.parseInt(xCoordBox.getText());
+						int newY = Integer.parseInt(yCoordBox.getText());
 
 					} catch (NumberFormatException nfe) {
 						System.out.println("Location Error: " + nfe);
@@ -252,7 +262,7 @@ public class DialogController {
 		// change price
 		case 2:
 			selectionModel.select(tabNum);
-
+			priceBox.setPromptText(Float.toString(item.getValue().getPrice()));
 			applyButton.setOnAction(new EventHandler<ActionEvent>() {
 
 				@Override
@@ -280,27 +290,35 @@ public class DialogController {
 		// change dimensions
 		case 3:
 			selectionModel.select(tabNum);
+			heightBox.setPromptText(Integer.toString(item.getValue().getHeight()));
+			widthBox.setPromptText(Integer.toString(item.getValue().getWidth()));
+			lengthBox.setPromptText(Integer.toString(item.getValue().getLength()));
 			applyButton.setOnAction(new EventHandler<ActionEvent>() {
 
 				@Override
 				public void handle(ActionEvent e) {
 
-					if (lengthBox.getText() == null || widthBox.getText() == null) {
+					if (lengthBox.getText() == null || widthBox.getText() == null || heightBox.getText() == null) {
 						inputErrorDimensions.setVisible(true);
 					}
 					try {
 						int testL = Integer.parseInt(lengthBox.getText());
 						int testW = Integer.parseInt(widthBox.getText());
+						int testH = Integer.parseInt(heightBox.getText());
+						
+
 
 					} catch (NumberFormatException nfe) {
 						System.out.println("Dimensions Error: " + nfe);
 						inputErrorDimensions.setVisible(true);
 					}
-
+					
 					int newLength = Integer.parseInt(lengthBox.getText());
-					item.getValue().setLength(newLength);
 					int newWidth = Integer.parseInt(widthBox.getText());
+					int newHeight = Integer.parseInt(heightBox.getText());
+					item.getValue().setLength(newLength);
 					item.getValue().setWidth(newWidth);
+					item.getValue().setHeight(newHeight);
 					cancelDialog();
 
 				}
@@ -311,27 +329,44 @@ public class DialogController {
 		// add item
 		case 4:
 			selectionModel.select(tabNum);
-
+			newItemName.setPromptText("Item Name");
+			newItemX.setPromptText("X Coordinate");
+			newItemY.setPromptText("Y Coordinate");
+			newItemWidth.setPromptText("Width");
+			newItemLength.setPromptText("Length");
+			newItemHeight.setPromptText("Height");
+			newItemPrice.setPromptText("99.99");
 			applyButton.setOnAction(new EventHandler<ActionEvent>() {
 
 				@Override
 				public void handle(ActionEvent e) {
-
+					
+					inputErrorAddItem.setVisible(false);
+					
 					if (!newItemName.getText().equals("")) {
 						if (newItemPrice.getText() == null || newItemY.getText() == null
 								|| newItemWidth.getText() == null || newItemLength.getText() == null
-								|| newItemPrice.getText() == null) {
+								|| newItemPrice.getText() == null || newItemHeight.getText() == null) {
 							inputErrorAddItem.setVisible(true);
 						}
 
 						try {
-							int x = Integer.parseInt(newItemPrice.getText());
+							int x = Integer.parseInt(newItemX.getText());
 							int y = Integer.parseInt(newItemY.getText());
 							int w = Integer.parseInt(newItemWidth.getText());
 							int l = Integer.parseInt(newItemLength.getText());
-							int p = Integer.parseInt(newItemPrice.getText());
+							int h = Integer.parseInt(newItemHeight.getText());
 						} catch (NumberFormatException nfe) {
 							System.out.println("Add Item Error: " + nfe);
+							inputErrorAddItem.setText("Position and dimension values must be whole numbers.");
+							inputErrorAddItem.setVisible(true);
+						}
+						
+						try {
+							Float p = Float.parseFloat(newItemPrice.getText());
+						} catch (NumberFormatException nfe) {
+							System.out.println("Add Item Error: " + nfe);
+							inputErrorAddItem.setText("All values except name must be numeric.");
 							inputErrorAddItem.setVisible(true);
 						}
 
@@ -339,9 +374,10 @@ public class DialogController {
 						int y = Integer.parseInt(newItemY.getText());
 						int w = Integer.parseInt(newItemWidth.getText());
 						int l = Integer.parseInt(newItemLength.getText());
+						int h = Integer.parseInt(newItemHeight.getText());
 						Float p = Float.parseFloat(newItemPrice.getText());
 
-						Item newItem = new Item(newItemName.getText(), x, y, w, l, p);
+						Item newItem = new Item(newItemName.getText(), x, y, w, l, h, p);
 						((ItemContainer) item.getValue()).addItemAbstract(newItem);
 						cancelDialog();
 
@@ -355,14 +391,22 @@ public class DialogController {
 		// add item container
 		case 5:
 			selectionModel.select(tabNum);
+			newContainerName.setPromptText("Item Container Name");
+			newContainerX.setPromptText("X Coordinate");
+			newContainerY.setPromptText("Y Coordinate");
+			newContainerWidth.setPromptText("Width");
+			newContainerLength.setPromptText("Length");
+			newContainerHeight.setPromptText("Height");
+			newContainerPrice.setPromptText("99.99");
 			applyButton.setOnAction(new EventHandler<ActionEvent>() {
 
 				@Override
 				public void handle(ActionEvent e) {
+					inputErrorAddItemContainer.setVisible(false);
 					if (!newContainerName.getText().equals("")) {
 						if (newContainerX.getText() == null || newContainerY.getText() == null
 								|| newContainerWidth.getText() == null || newContainerLength.getText() == null
-								|| newContainerPrice.getText() == null) {
+								|| newContainerPrice.getText() == null || newContainerHeight == null) {
 							inputErrorAddItemContainer.setVisible(true);
 						}
 
@@ -371,10 +415,18 @@ public class DialogController {
 							int y = Integer.parseInt(newContainerY.getText());
 							int w = Integer.parseInt(newContainerWidth.getText());
 							int l = Integer.parseInt(newContainerLength.getText());
-							Float p = Float.parseFloat(newContainerPrice.getText());
-
+							int h = Integer.parseInt(newContainerHeight.getText());
 						} catch (NumberFormatException nfe) {
-							System.out.println("Add Container Error: " + nfe);
+							System.out.println("Add Item Error: " + nfe);
+							inputErrorAddItemContainer.setText("Position and dimension values must be whole numbers.");
+							inputErrorAddItemContainer.setVisible(true);
+						}
+						
+						try {
+							Float p = Float.parseFloat(newContainerPrice.getText());
+						} catch (NumberFormatException nfe) {
+							System.out.println("Add Item Error: " + nfe);
+							inputErrorAddItemContainer.setText("All values except name must be numeric.");
 							inputErrorAddItemContainer.setVisible(true);
 						}
 
@@ -383,8 +435,9 @@ public class DialogController {
 						int w = Integer.parseInt(newContainerWidth.getText());
 						int l = Integer.parseInt(newContainerLength.getText());
 						Float p = Float.parseFloat(newContainerPrice.getText());
+						int h = Integer.parseInt(newContainerHeight.getText());
 
-						ItemContainer newContainer = new ItemContainer(newContainerName.getText(), x, y, w, l, p);
+						ItemContainer newContainer = new ItemContainer(newContainerName.getText(), x, y, w, l, h, p);
 						((ItemContainer) item.getValue()).addItemAbstract(newContainer);
 
 						cancelDialog();
