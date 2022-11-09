@@ -262,7 +262,7 @@ public class DialogController {
 		// change price
 		case 2:
 			selectionModel.select(tabNum);
-			priceBox.setPromptText(Float.toString(item.getValue().getPrice()));
+			priceBox.setPromptText(Double.toString(item.getValue().getPrice()));
 			applyButton.setOnAction(new EventHandler<ActionEvent>() {
 
 				@Override
@@ -376,8 +376,9 @@ public class DialogController {
 						int l = Integer.parseInt(newItemLength.getText());
 						int h = Integer.parseInt(newItemHeight.getText());
 						Float p = Float.parseFloat(newItemPrice.getText());
-
-						Item newItem = new Item(newItemName.getText(), x, y, w, l, h, p);
+						
+						//replace 100 with mv
+						Item newItem = new Item(newItemName.getText(), x, y, w, l, h, p, 100);
 						((ItemContainer) item.getValue()).addItemAbstract(newItem);
 						cancelDialog();
 

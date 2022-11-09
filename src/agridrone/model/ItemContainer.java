@@ -7,7 +7,7 @@ public class ItemContainer extends ItemAbstract {
 	
 	private ObservableList<ItemAbstract> contents = FXCollections.observableArrayList();
 	
-	public ItemContainer(String name, int x, int y, int w, int l, int h, Float p) {
+	public ItemContainer(String name, int x, int y, int w, int l, int h, double p) {
 		super(name, x, y, w, l, h, p);
 	}
 	
@@ -35,6 +35,10 @@ public class ItemContainer extends ItemAbstract {
 		
 		//deleting current item
 		this.getParentContainer().getContents().remove(this);
+	}
+	
+	public double getContainerMV(MarketValueVisitor v) {
+		return v.doForItemContainer(this);
 	}
 
 

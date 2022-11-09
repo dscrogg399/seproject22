@@ -10,10 +10,10 @@ public abstract class ItemAbstract {
 	private int width;
 	private int length;
 	private int height;
-	private float price;
+	private double price;
 	private ItemContainer parentContainer;
 	
-	public ItemAbstract(String name, int x, int y, int w, int l, int h, Float price) {
+	public ItemAbstract(String name, int x, int y, int w, int l, int h, double price) {
 		this.name = name;
 		this.locationX = x;
 		this.locationY = y;
@@ -66,7 +66,7 @@ public abstract class ItemAbstract {
 		this.height = h;
 	}
 	
-	public float getPrice() {
+	public double getPrice() {
 		return this.price;
 	}
 	public void setPrice(float price) {

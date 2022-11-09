@@ -131,8 +131,8 @@ public class DashboardController {
 	public void initialize() {
 		//initial farm, comm center and drone data
         farm = Farm.getInstance();
-		commCent = new ItemContainer("Command Center", 10, 10, 90, 90, 20, (float)1000);
-		drone = new Drone("Drone", commCent.getLocationX() + 5, commCent.getLocationY() + 5, 80, 80, 5, (float)1000);
+		commCent = new ItemContainer("Command Center", 10, 10, 90, 90, 20, 1000);
+		drone = new Drone("Drone", commCent.getLocationX() + 5, commCent.getLocationY() + 5, 80, 80, 5, 1000, 1000);
         commCent.addItemAbstract(drone);
         farm.addItemAbstract(commCent);
 
@@ -269,7 +269,7 @@ public class DashboardController {
 		if (item != null) {
 			detailsLabel.setText(item.getName() + " Details");
 			nameLabel.setText(item.getName());
-			priceLabel.setText(Float.toString(item.getPrice()));
+			priceLabel.setText(Double.toString(item.getPrice()));
 			locationLabel.setText("(" + Integer.toString(item.getLocationX()) + ", " + Integer.toString(item.getLocationY()) + ")");
 			sizeLabel.setText(Integer.toString(item.getLength()) + " x " + Integer.toString(item.getWidth()));
 			visitButton.setText("Visit " + item.getName());
