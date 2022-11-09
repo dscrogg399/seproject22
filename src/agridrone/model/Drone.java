@@ -39,8 +39,8 @@ public class Drone extends Item{
 	TranslateTransition translate9 = new TranslateTransition();
 	
 	
-	public Drone(String name, int x, int y, int w, int l, int h, Float price) {
-		super(name, x, y, w, l, h, price);
+	public Drone(String name, int x, int y, int w, int l, int h, double price, double mv) {
+		super(name, x, y, w, l, h, price, mv);
 	}
 
 	public void gotoItem(ItemAbstract item, ImageView drone, Button scanButton) {
