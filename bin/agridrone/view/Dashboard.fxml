@@ -17,7 +17,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="960.0" maxWidth="1260.0" minHeight="960.0" minWidth="1260.0" prefHeight="960.0" prefWidth="1260.0" style="-fx-background-color: #6a6a6a;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="agridrone.view.DashboardController">
+<AnchorPane maxHeight="960.0" maxWidth="1260.0" minHeight="960.0" minWidth="1260.0" prefHeight="960.0" prefWidth="1260.0" style="-fx-background-color: #6a6a6a;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="agridrone.view.DashboardController">
    <children>
       <Label alignment="CENTER" minHeight="60.0" prefHeight="60.0" prefWidth="1265.0" text="Farm Dashboard" textFill="WHITE">
          <font>
@@ -47,14 +47,15 @@
                                     <Font size="18.0" />
                                  </font>
                               </Label>
-                              <GridPane prefHeight="200.0">
+                              <GridPane>
                                 <columnConstraints>
-                                  <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" percentWidth="20.0" />
-                                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                  <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="92.0" percentWidth="25.0" prefWidth="142.0" />
+                                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="406.0" minWidth="10.0" prefWidth="356.0" />
                                 </columnConstraints>
                                 <rowConstraints>
                                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                 </rowConstraints>
@@ -75,7 +76,7 @@
                                           <Insets right="5.0" />
                                        </GridPane.margin>
                                     </Label>
-                                    <Label text="Location:" GridPane.rowIndex="2">
+                                    <Label text="Location:" GridPane.rowIndex="3">
                                        <font>
                                           <Font size="18.0" />
                                        </font>
@@ -93,12 +94,12 @@
                                           <Font size="18.0" />
                                        </font>
                                     </Label>
-                                    <Label fx:id="locationLabel" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                                    <Label fx:id="locationLabel" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="3">
                                        <font>
                                           <Font size="18.0" />
                                        </font>
                                     </Label>
-                                    <Label text="Size (LxW):" GridPane.rowIndex="3">
+                                    <Label text="Size (LxW):" GridPane.rowIndex="4">
                                        <font>
                                           <Font size="18.0" />
                                        </font>
@@ -106,7 +107,20 @@
                                           <Insets right="5.0" />
                                        </padding>
                                     </Label>
-                                    <Label fx:id="sizeLabel" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                                    <Label fx:id="sizeLabel" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                                       <font>
+                                          <Font size="18.0" />
+                                       </font>
+                                    </Label>
+                                    <Label prefHeight="27.0" prefWidth="117.0" text="Market Value:" GridPane.rowIndex="2">
+                                       <GridPane.margin>
+                                          <Insets />
+                                       </GridPane.margin>
+                                       <font>
+                                          <Font size="18.0" />
+                                       </font>
+                                    </Label>
+                                    <Label fx:id="marketValueLabel" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="2">
                                        <font>
                                           <Font size="18.0" />
                                        </font>

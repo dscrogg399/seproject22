@@ -30,6 +30,7 @@ import agridrone.model.Farm;
 import agridrone.model.Item;
 import agridrone.model.ItemAbstract;
 import agridrone.model.ItemContainer;
+import agridrone.model.MarketValueVisitor;
 
 public class DashboardController {
 	
@@ -50,6 +51,9 @@ public class DashboardController {
 	
 	@FXML
 	private Label sizeLabel;
+	
+	@FXML
+	private Label marketValueLabel;
 	
 	@FXML
 	private Button visitButton;
@@ -105,19 +109,26 @@ public class DashboardController {
 	};
 	private EventHandler<ActionEvent> changeDimensionsEvent = new EventHandler<ActionEvent>() {
 		public void handle(ActionEvent e) {
-			showDialogBox(3);
+			showDialogBox(4);
 		}
 	};
 	private EventHandler<ActionEvent> addItemEvent = new EventHandler<ActionEvent>() {
 		public void handle(ActionEvent e) {
-			showDialogBox(4);
+			showDialogBox(5);
 		}
 	};
 	private EventHandler<ActionEvent> addContainerEvent = new EventHandler<ActionEvent>() {
 		public void handle(ActionEvent e) {
-			showDialogBox(5);
+			showDialogBox(6);
 		}
 	};
+	
+	private EventHandler<ActionEvent> changeMarketValueEvent = new EventHandler<ActionEvent>() {
+		public void handle(ActionEvent e) {
+			showDialogBox(3);
+		}
+	};
+	
 	private EventHandler<ActionEvent> deleteItemEvent = new EventHandler<ActionEvent>() {
 		public void handle(ActionEvent e) {
 			TreeItem<ItemAbstract> current = getSelected();
@@ -202,24 +213,27 @@ public class DashboardController {
 		menuAction2.setOnAction(changeLocationEvent);
 		MenuItem menuAction3 = new MenuItem("Change Price");
 		menuAction3.setOnAction(changePriceEvent);
-		MenuItem menuAction4 = new MenuItem("Change Dimensions");
-		menuAction4.setOnAction(changeDimensionsEvent);
-		MenuItem menuAction5 = new MenuItem("Add Item");
-		menuAction5.setOnAction(addItemEvent);
-		MenuItem menuAction6 = new MenuItem("Add Item Containter");
-		menuAction6.setOnAction(addContainerEvent);
-		MenuItem menuAction7 = new MenuItem("Delete");
-		menuAction7.setOnAction(deleteItemEvent);
+		MenuItem menuAction4 = new MenuItem("Change Market Value");
+		menuAction4.setOnAction(changeMarketValueEvent);
+		MenuItem menuAction5 = new MenuItem("Change Dimensions");
+		menuAction5.setOnAction(changeDimensionsEvent);
+		MenuItem menuAction6 = new MenuItem("Add Item");
+		menuAction6.setOnAction(addItemEvent);
+		MenuItem menuAction7 = new MenuItem("Add Item Containter");
+		menuAction7.setOnAction(addContainerEvent);
+		MenuItem menuAction8 = new MenuItem("Delete");
+		menuAction8.setOnAction(deleteItemEvent);
+
 		
 		switch(type) {
 		case 1:
-			contextMenu.getItems().addAll(menuAction1, menuAction2, menuAction3, menuAction4, menuAction7);
+			contextMenu.getItems().addAll(menuAction1, menuAction2, menuAction3, menuAction4, menuAction7, menuAction8);
 			break;
 		case 2:
-			contextMenu.getItems().addAll(menuAction1, menuAction2, menuAction3, menuAction4, menuAction5, menuAction6, menuAction7);
+			contextMenu.getItems().addAll(menuAction1, menuAction2, menuAction3, menuAction5, menuAction6, menuAction7, menuAction8);
 			break;
 		case 3:
-			contextMenu.getItems().addAll(menuAction1, menuAction2, menuAction3, menuAction4);
+			contextMenu.getItems().addAll(menuAction1, menuAction2, menuAction3, menuAction4, menuAction8);
 			break;
 		case 4:
 			contextMenu.getItems().addAll(menuAction5, menuAction6);
@@ -266,7 +280,15 @@ public class DashboardController {
 	
 	//sets the labels on the page to info corresponding with the selected item
 	private void showItemDetails(ItemAbstract item) {
+		
+		if(item instanceof ItemContainer && item != null) {
+			MarketValueVisitor visitor = new MarketValueVisitor();
+			double sum = visitor.doForItemContainer((ItemContainer) item);
+			marketValueLabel.setText("" + sum);
+			
+		}
 		if (item != null) {
+			
 			detailsLabel.setText(item.getName() + " Details");
 			nameLabel.setText(item.getName());
 			priceLabel.setText(Double.toString(item.getPrice()));
@@ -290,6 +312,9 @@ public class DashboardController {
 			visitButton.setText("Select an item from the menu to visit it with Drone");
 			visitButton.setDisable(true);
 
+		}
+		if(item instanceof Item && item != null) {
+		marketValueLabel.setText(Double.toString(((Item) item).getMarketValue()));
 		}
 	}
 	

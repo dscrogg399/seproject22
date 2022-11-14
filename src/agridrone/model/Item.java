@@ -9,8 +9,8 @@ public class Item extends ItemAbstract{
 		this.marketValue = mv;
 	}
 	
+
 	public double getMarketValue() {
-		// TODO Auto-generated method stub
 		return this.marketValue;
 	}
 	public void setMarketValue(double mv) {
