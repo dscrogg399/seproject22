@@ -12,6 +12,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.TreeCell;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
@@ -30,6 +31,7 @@ import agridrone.model.Farm;
 import agridrone.model.Item;
 import agridrone.model.ItemAbstract;
 import agridrone.model.ItemContainer;
+import agridrone.model.MarketValueVisitor;
 
 public class DashboardController {
 	
@@ -52,13 +54,22 @@ public class DashboardController {
 	private Label sizeLabel;
 	
 	@FXML
-	private Button visitButton;
+	private Label marketValueLabel;
 	
 	@FXML
-    private Button parentButton;
+	private RadioButton visitButton;
+	
+//	@FXML
+//    private Button parentButton;
 	
 	@FXML
-	private Button scanButton;
+	private RadioButton scanButton;
+	
+	@FXML
+	private Button launchSim;
+	
+	@FXML
+	private Button launchDrone;
 	
 	@FXML
 	private AnchorPane myVisual;
@@ -130,12 +141,11 @@ public class DashboardController {
 	@FXML
 	public void initialize() {
 		//initial farm, comm center and drone data
-        farm = Farm.getInstance();
-		commCent = new ItemContainer("Command Center", 10, 10, 90, 90, 20, 1000);
-		drone = new Drone("Drone", commCent.getLocationX() + 5, commCent.getLocationY() + 5, 80, 80, 5, 1000, 1000);
+		farm = Farm.getInstance();
+        commCent = new ItemContainer("Command Center", 10, 10, 90, 90, 20, 1000);
+        drone = new Drone("Drone", commCent.getLocationX() + 5, commCent.getLocationY() + 5, 80, 80, 5, 1000, 1000);
         commCent.addItemAbstract(drone);
         farm.addItemAbstract(commCent);
-
 		
 		renderTree();
 		
@@ -157,34 +167,65 @@ public class DashboardController {
 				
 			}
 		});
+		
+		
+		
 
 		
-		EventHandler<ActionEvent> scanFarm = new EventHandler<ActionEvent>() {
+		EventHandler<ActionEvent> toggleController = new EventHandler<ActionEvent>() {
 
 			@Override
 			public void handle(ActionEvent e) {
-				drone.scanFarm(myVisual.getPrefHeight(), myVisual.getPrefWidth(), ImageBox, scanButton);
+				
+				try {
+					if(scanButton.isSelected()) {
+					drone.scanFarm(myVisual.getPrefHeight(), myVisual.getPrefWidth(), ImageBox, scanButton);
+					}
+					
+					else if(visitButton.isSelected()) {
+						drone.gotoItem(itemList.getSelectionModel().getSelectedItem().getValue(), ImageBox, scanButton);
+					}
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 				
 			}
 			
 		};
 		
-		EventHandler<ActionEvent> gotoItemFarm = new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent e) {
-				drone.gotoItem(itemList.getSelectionModel().getSelectedItem().getValue(), ImageBox, scanButton);
-			}
-		};
+//		EventHandler<ActionEvent> gotoItemFarm = new EventHandler<ActionEvent>() {
+//			@Override
+//			public void handle(ActionEvent e) {
+//				try {
+//					drone.gotoItem(itemList.getSelectionModel().getSelectedItem().getValue(), ImageBox, scanButton);
+//				} catch (IOException e1) {
+//					// TODO Auto-generated catch block
+//					e1.printStackTrace();
+//				}
+//			}
+//		};
 		
-		EventHandler<ActionEvent> gotoParentFarm = new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent e) {
-				drone.gotoParent(ImageBox, scanButton);
-			}
-		};
-		scanButton.setOnAction(scanFarm);
-		visitButton.setOnAction(gotoItemFarm);
-		parentButton.setOnAction(gotoParentFarm);
+		
+		
+		
+//		EventHandler<ActionEvent> gotoParentFarm = new EventHandler<ActionEvent>() {
+//			@Override
+//			public void handle(ActionEvent e) {
+//				drone.gotoParent(ImageBox, scanButton);
+//			}
+//		};
+		
+		
+		
+		
+		launchSim.setOnAction(toggleController);
+//		visitButton.setOnAction(gotoItemFarm);
+//		parentButton.setOnAction(gotoParentFarm);
+		
+		
+		
+		
 	}
 	
 	//get currently selected TreeItem
@@ -264,34 +305,50 @@ public class DashboardController {
 		}
 	}
 	
+	
+	
 	//sets the labels on the page to info corresponding with the selected item
 	private void showItemDetails(ItemAbstract item) {
-		if (item != null) {
-			detailsLabel.setText(item.getName() + " Details");
-			nameLabel.setText(item.getName());
-			priceLabel.setText(Double.toString(item.getPrice()));
-			locationLabel.setText("(" + Integer.toString(item.getLocationX()) + ", " + Integer.toString(item.getLocationY()) + ")");
-			sizeLabel.setText(Integer.toString(item.getLength()) + " x " + Integer.toString(item.getWidth()));
-			visitButton.setText("Visit " + item.getName());
-			if (item.getName().equals("Drone")) {
-				visitButton.setText("Cannot visit Drone with Drone");
-				visitButton.setDisable(true);
-			} else {
+		if(item instanceof Item && item != null) {
+		        marketValueLabel.setText(Double.toString(((Item) item).getMarketValue()));
+		        }
+		if(item instanceof ItemContainer && item != null) {
+            double sum = ((ItemContainer) item).getContainerMV(new MarketValueVisitor());
+            marketValueLabel.setText("" + sum);
+            
+        }
+        if (item != null) {
+            
+            detailsLabel.setText(item.getName() + " Details");
+            nameLabel.setText(item.getName());
+            priceLabel.setText(Double.toString(item.getPrice()));
+            locationLabel.setText("(" + Integer.toString(item.getLocationX()) + ", " + Integer.toString(item.getLocationY()) + ")");
+            sizeLabel.setText(Integer.toString(item.getLength()) + " x " + Integer.toString(item.getWidth()) + " x " + Integer.toString(item.getHeight()));
+            visitButton.setText("Visit " + item.getName());
+            if (item.getName().equals("Drone")) {
+                visitButton.setText("Cannot visit Drone with Drone");
+                visitButton.setDisable(true);
+            } else {
 
-				visitButton.setDisable(false);
-			}
-	
-		} else {
-			detailsLabel.setText("Select an item to see Details");
-			nameLabel.setText("");
-			priceLabel.setText("");
-			locationLabel.setText("");
-			sizeLabel.setText("");
-			visitButton.setText("Select an item from the menu to visit it with Drone");
-			visitButton.setDisable(true);
+                visitButton.setDisable(false);
+            }
+    
+        } else {
+            detailsLabel.setText("Select an item to see Details");
+            nameLabel.setText("");
+            priceLabel.setText("");
+            locationLabel.setText("");
+            sizeLabel.setText("");
+            visitButton.setText("Select an item from the menu to visit it with Drone");
+            visitButton.setDisable(true);
 
-		}
+        }
+      
 	}
+	
+	
+	
+	
 	
 	//render the tree based of the current state of this.farm
 	public void renderTree() {
