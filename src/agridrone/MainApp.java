@@ -47,6 +47,7 @@ public class MainApp extends Application {
 		primaryStage.show();
 		DashboardController controller = fxmlLoader.getController();
 		controller.setMainApp(this);
+		
 
 	}
 	
@@ -57,5 +58,7 @@ public class MainApp extends Application {
 
 	public static void main(String[] args) {
 		launch(args);
+		
+	
 	}
 }

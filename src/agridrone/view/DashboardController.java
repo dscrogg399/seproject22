@@ -86,6 +86,9 @@ public class DashboardController {
 	//main farm reference
 	private Farm farm;
 	
+	//initializing max height for accurate altitude on launch
+	private int maxHeight;
+	
 	//singleton stuff
 	private static final DashboardController singleton = new DashboardController();
 	public final int WINDOW_WIDTH = 1260;
@@ -383,6 +386,11 @@ public class DashboardController {
         	myVisual.getChildren().add(rect);
         	myVisual.getChildren().add(text);
         }
+        
+        //check each item against current maxHeight and replace if greater
+        if (item.getHeight() > maxHeight) {
+        	maxHeight = item.getHeight();
+        }
 
 		//if the item has children
 		if (item instanceof ItemContainer) {
@@ -403,6 +411,11 @@ public class DashboardController {
 	public void setMainApp(MainApp mainApp) {
 		this.mainApp = mainApp;
 
+	}
+	
+	//max height for dashboard getter 
+	public int getMaxHeight() {
+		return this.maxHeight;
 	}
 	
 	//dialog pane
