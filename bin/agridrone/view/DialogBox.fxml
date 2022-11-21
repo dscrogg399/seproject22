@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="580.0" prefWidth="580.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="agridrone.view.DialogController">
+<AnchorPane prefHeight="648.0" prefWidth="683.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="agridrone.view.DialogController">
    <children>
       <BorderPane layoutX="100.0" layoutY="100.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <bottom>
@@ -27,7 +27,7 @@
             </ButtonBar>
          </bottom>
          <center>
-            <TabPane fx:id="dialogContent" prefHeight="760.0" prefWidth="666.0" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
+            <TabPane fx:id="dialogContent" prefHeight="540.0" prefWidth="626.0" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
               <tabs>
                 <Tab fx:id="renameTab" text="Rename">
                      <content>
@@ -130,6 +130,36 @@
                            </children></AnchorPane>
                     </content>
                   </Tab>
+                  <Tab fx:id="changeMarketValueTab" text="Change Market Value">
+                    <content>
+                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                           <children>
+                              <VBox alignment="CENTER_LEFT" prefHeight="513.0" prefWidth="683.0" spacing="20.0">
+                                 <children>
+                                    <Label text="New Market Value">
+                                       <font>
+                                          <Font size="24.0" />
+                                       </font>
+                                       <VBox.margin>
+                                          <Insets left="30.0" />
+                                       </VBox.margin>
+                                    </Label>
+                                    <TextField fx:id="marketValueBox">
+                                       <VBox.margin>
+                                          <Insets left="30.0" right="150.0" />
+                                       </VBox.margin>
+                                    </TextField>
+                                    <Label fx:id="marketValueError" prefHeight="17.0" prefWidth="167.0" text="All inputs must be numeric!" textFill="RED" visible="false">
+                                       <VBox.margin>
+                                          <Insets left="280.0" />
+                                       </VBox.margin>
+                                    </Label>
+                                 </children>
+                              </VBox>
+                           </children>
+                        </AnchorPane>
+                    </content>
+                  </Tab>
                   <Tab fx:id="changeDimensionsTab" text="Change Dimensions">
                     <content>
                       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="729.0" prefWidth="622.0">
@@ -224,6 +254,16 @@
                                        </font>
                                     </Label>
                                     <TextField fx:id="newItemPrice">
+                                       <VBox.margin>
+                                          <Insets right="150.0" />
+                                       </VBox.margin>
+                                    </TextField>
+                                    <Label text="Item Market Value">
+                                       <font>
+                                          <Font size="18.0" />
+                                       </font>
+                                    </Label>
+                                    <TextField fx:id="newItemMarketValue">
                                        <VBox.margin>
                                           <Insets right="150.0" />
                                        </VBox.margin>
