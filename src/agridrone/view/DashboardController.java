@@ -24,7 +24,12 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.SocketException;
+import java.net.UnknownHostException;
+
 import agridrone.MainApp;
 import agridrone.model.Drone;
 import agridrone.model.Farm;
@@ -32,6 +37,7 @@ import agridrone.model.Item;
 import agridrone.model.ItemAbstract;
 import agridrone.model.ItemContainer;
 import agridrone.model.MarketValueVisitor;
+import agridrone.model.TelloDrone;
 
 public class DashboardController {
 	
@@ -86,6 +92,15 @@ public class DashboardController {
 	//main farm reference
 	private Farm farm;
 	
+	//initializing max height for accurate altitude on launch
+	private int maxHeight;
+	
+	
+	//TelloDrone reference
+	private TelloDrone Tello;
+	
+	DashboardController Controller;
+	
 	//singleton stuff
 	private static final DashboardController singleton = new DashboardController();
 	public final int WINDOW_WIDTH = 1260;
@@ -114,19 +129,29 @@ public class DashboardController {
 			showDialogBox(2);
 		}
 	};
+	
+	private EventHandler<ActionEvent> changeMarketValueEvent = new EventHandler<ActionEvent>() {
+        public void handle(ActionEvent e) {
+            showDialogBox(3);
+        }
+    };
+    
+    
 	private EventHandler<ActionEvent> changeDimensionsEvent = new EventHandler<ActionEvent>() {
-		public void handle(ActionEvent e) {
-			showDialogBox(3);
-		}
-	};
-	private EventHandler<ActionEvent> addItemEvent = new EventHandler<ActionEvent>() {
 		public void handle(ActionEvent e) {
 			showDialogBox(4);
 		}
 	};
-	private EventHandler<ActionEvent> addContainerEvent = new EventHandler<ActionEvent>() {
+	private EventHandler<ActionEvent> addItemEvent = new EventHandler<ActionEvent>() {
 		public void handle(ActionEvent e) {
 			showDialogBox(5);
+			
+			
+		}
+	};
+	private EventHandler<ActionEvent> addContainerEvent = new EventHandler<ActionEvent>() {
+		public void handle(ActionEvent e) {
+			showDialogBox(6);
 		}
 	};
 	private EventHandler<ActionEvent> deleteItemEvent = new EventHandler<ActionEvent>() {
@@ -138,6 +163,8 @@ public class DashboardController {
 	};
 	
 	
+	
+	
 	@FXML
 	public void initialize() {
 		//initial farm, comm center and drone data
@@ -147,7 +174,12 @@ public class DashboardController {
         commCent.addItemAbstract(drone);
         farm.addItemAbstract(commCent);
 		
+        
 		renderTree();
+		
+		
+		
+		
 		
 
 //		initial null load
@@ -194,6 +226,51 @@ public class DashboardController {
 			
 		};
 		
+		EventHandler<ActionEvent> LaunchDronebutton = new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent e) {
+				try {
+					Controller = new DashboardController();
+					Controller.setMaxHeight(maxHeight);
+					
+					Tello = new TelloDrone(drone, Controller);
+				} catch (SocketException e2) {
+					// TODO Auto-generated catch block
+					e2.printStackTrace();
+				} catch (UnknownHostException e2) {
+					// TODO Auto-generated catch block
+					e2.printStackTrace();
+				} catch (FileNotFoundException e2) {
+					// TODO Auto-generated catch block
+					e2.printStackTrace();
+				}
+				try {
+					if(scanButton.isSelected()) {
+						
+					try {
+						Tello.ScanFarm();
+					} catch (InterruptedException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+					}
+					
+					else if(visitButton.isSelected()) {
+						try {
+							Tello.Gotoitem();
+						} catch (InterruptedException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
+					}
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				
+			}
+		};
+		
 //		EventHandler<ActionEvent> gotoItemFarm = new EventHandler<ActionEvent>() {
 //			@Override
 //			public void handle(ActionEvent e) {
@@ -219,7 +296,9 @@ public class DashboardController {
 		
 		
 		
+		
 		launchSim.setOnAction(toggleController);
+		launchDrone.setOnAction(LaunchDronebutton);
 //		visitButton.setOnAction(gotoItemFarm);
 //		parentButton.setOnAction(gotoParentFarm);
 		
@@ -236,35 +315,35 @@ public class DashboardController {
 	private ContextMenu makeContextMenu(int type) {
 		//Item context menu
 		ContextMenu contextMenu = new ContextMenu();
-		//item right click menu actions
 		MenuItem menuAction1 = new MenuItem("Rename");
-		menuAction1.setOnAction(renameEvent);
-		MenuItem menuAction2 = new MenuItem("Change Location");
-		menuAction2.setOnAction(changeLocationEvent);
-		MenuItem menuAction3 = new MenuItem("Change Price");
-		menuAction3.setOnAction(changePriceEvent);
-		MenuItem menuAction4 = new MenuItem("Change Dimensions");
-		menuAction4.setOnAction(changeDimensionsEvent);
-		MenuItem menuAction5 = new MenuItem("Add Item");
-		menuAction5.setOnAction(addItemEvent);
-		MenuItem menuAction6 = new MenuItem("Add Item Containter");
-		menuAction6.setOnAction(addContainerEvent);
-		MenuItem menuAction7 = new MenuItem("Delete");
-		menuAction7.setOnAction(deleteItemEvent);
-		
-		switch(type) {
-		case 1:
-			contextMenu.getItems().addAll(menuAction1, menuAction2, menuAction3, menuAction4, menuAction7);
-			break;
-		case 2:
-			contextMenu.getItems().addAll(menuAction1, menuAction2, menuAction3, menuAction4, menuAction5, menuAction6, menuAction7);
-			break;
-		case 3:
-			contextMenu.getItems().addAll(menuAction1, menuAction2, menuAction3, menuAction4);
-			break;
-		case 4:
-			contextMenu.getItems().addAll(menuAction5, menuAction6);
-		}
+        menuAction1.setOnAction(renameEvent);
+        MenuItem menuAction2 = new MenuItem("Change Location");
+        menuAction2.setOnAction(changeLocationEvent);
+        MenuItem menuAction3 = new MenuItem("Change Price");
+        menuAction3.setOnAction(changePriceEvent);
+        MenuItem menuAction4 = new MenuItem("Change Market Value");
+        menuAction4.setOnAction(changeMarketValueEvent);
+        MenuItem menuAction5 = new MenuItem("Change Dimensions");
+        menuAction5.setOnAction(changeDimensionsEvent);
+        MenuItem menuAction6 = new MenuItem("Add Item");
+        menuAction6.setOnAction(addItemEvent);
+        MenuItem menuAction7 = new MenuItem("Add Item Containter");
+        menuAction7.setOnAction(addContainerEvent);
+        MenuItem menuAction8 = new MenuItem("Delete");
+        menuAction8.setOnAction(deleteItemEvent);
+        switch(type) {
+        case 1:
+            contextMenu.getItems().addAll(menuAction1, menuAction2, menuAction3, menuAction4, menuAction6, menuAction7, menuAction8);
+            break;
+        case 2:
+            contextMenu.getItems().addAll(menuAction1, menuAction2, menuAction3, menuAction5, menuAction6, menuAction7, menuAction8);
+            break;
+        case 3:
+            contextMenu.getItems().addAll(menuAction1, menuAction2, menuAction3, menuAction4, menuAction5, menuAction8);
+            break;
+        case 4:
+            contextMenu.getItems().addAll(menuAction3, menuAction6, menuAction7);
+        }
 		
 		return contextMenu;
 	}
@@ -302,7 +381,17 @@ public class DashboardController {
 			if (item instanceof Farm) {
 				setContextMenu(makeContextMenu(4));
 			}
+		
+			//check each item against current maxHeight and replace if greater
+	        if (item != null) {
+	        	if (item.getHeight() > maxHeight) {
+	        	maxHeight = item.getHeight();
+	        	
+	        }
 		}
+		}
+		
+		
 	}
 	
 	
@@ -343,6 +432,8 @@ public class DashboardController {
             visitButton.setDisable(true);
 
         }
+        
+        
       
 	}
 	
@@ -383,6 +474,10 @@ public class DashboardController {
         	myVisual.getChildren().add(rect);
         	myVisual.getChildren().add(text);
         }
+        
+        if (item.getHeight() > this.maxHeight) {
+        	this.maxHeight = item.getHeight();
+        }
 
 		//if the item has children
 		if (item instanceof ItemContainer) {
@@ -404,6 +499,15 @@ public class DashboardController {
 		this.mainApp = mainApp;
 
 	}
+	
+	public void setMaxHeight(int height) {
+		this.maxHeight = height;
+	}
+	
+	//max height for dashboard getter 
+		public int getMaxHeight() {
+			return this.maxHeight;
+		}
 	
 	//dialog pane
 	@FXML

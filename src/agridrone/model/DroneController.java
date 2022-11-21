@@ -64,26 +64,7 @@ public class DroneController {
 		return droneAddress;
 	}
 
-	public static void main(String[] args) throws IOException {
-		DroneController tester = new DroneController(9000, /*11111,*/ 8889, "192.168.10.1");
 
-		System.out.println("Drone Controller Demo" + "\n");
-		System.out.println("Try any string to test" + "\n");
-		System.out.println("end -- quit demo" + "\n");
-
-		Scanner scan = new Scanner(System.in);
-
-		String command = scan.nextLine();
-
-		while(!command.equals("end") && command != null && !command.trim().isEmpty()) {
-			tester.sendCommand(command);
-			command = scan.nextLine();
-		}
-
-		scan.close();
-		tester.closeControlSocket();
-		System.out.println("Exit Program...");
-	}
 
 
 }
