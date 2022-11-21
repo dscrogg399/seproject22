@@ -69,7 +69,7 @@ public abstract class ItemAbstract {
 	public double getPrice() {
 		return this.price;
 	}
-	public void setPrice(float price) {
+	public void setPrice(double price) {
 		this.price = price;
 	}
 	

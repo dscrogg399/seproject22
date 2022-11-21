@@ -34,6 +34,7 @@ public class MainApp extends Application {
 	
 	private Stage primaryStage;
 	
+	
 
 	@Override
 	public void start(Stage stage) throws IOException {
@@ -47,6 +48,7 @@ public class MainApp extends Application {
 		primaryStage.show();
 		DashboardController controller = fxmlLoader.getController();
 		controller.setMainApp(this);
+		
 
 	}
 	

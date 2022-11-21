@@ -1,5 +1,6 @@
 package agridrone.view;
 
+
 import agridrone.model.Item;
 import agridrone.model.ItemAbstract;
 import agridrone.model.ItemContainer;
@@ -47,6 +48,9 @@ public class DialogController {
 	private Tab addItemContTab;
 
 	@FXML
+	private Tab changeMarketValueTab;
+
+	@FXML
 	private Button dialogCancelButton;
 
 	@FXML
@@ -65,11 +69,14 @@ public class DialogController {
 	private TextField priceBox;
 
 	@FXML
+	private TextField marketValueBox;
+
+	@FXML
 	private TextField widthBox;
 
 	@FXML
 	private TextField lengthBox;
-	
+
 	@FXML
 	private TextField heightBox;
 
@@ -86,11 +93,14 @@ public class DialogController {
 	private TextField newItemPrice;
 
 	@FXML
+	private TextField newItemMarketValue;
+
+	@FXML
 	private TextField newItemWidth;
 
 	@FXML
 	private TextField newItemLength;
-	
+
 	@FXML
 	private TextField newItemHeight;
 
@@ -111,7 +121,7 @@ public class DialogController {
 
 	@FXML
 	private TextField newContainerLength;
-	
+
 	@FXML
 	private TextField newContainerHeight;
 
@@ -126,6 +136,9 @@ public class DialogController {
 
 	@FXML
 	private Label inputErrorAddItem;
+
+	@FXML
+	private Label marketValueError;
 
 	@FXML
 	private Label inputErrorAddItemContainer;
@@ -287,8 +300,37 @@ public class DialogController {
 			});
 
 			break;
-		// change dimensions
+		// change market value
 		case 3:
+			selectionModel.select(tabNum);
+			marketValueBox.setPromptText("99.9");
+
+			applyButton.setOnAction(new EventHandler<ActionEvent>() {
+
+				@Override
+				public void handle(ActionEvent e) {
+
+					Item mv = (Item) item.getValue();
+					if (marketValueBox.getText() == null) {
+						marketValueError.setVisible(true);
+					}
+					try {
+						Double testMV = Double.parseDouble(marketValueBox.getText());
+					} catch (NumberFormatException nfe) {
+						System.out.println("Market Price Error: " + nfe);
+						marketValueError.setVisible(true);
+
+					}
+					Double newMV = Double.parseDouble(marketValueBox.getText());
+					mv.setMarketValue(newMV);
+					cancelDialog();
+
+				}
+
+			});
+			break;
+		// change dimensions
+		case 4:
 			selectionModel.select(tabNum);
 			heightBox.setPromptText(Integer.toString(item.getValue().getHeight()));
 			widthBox.setPromptText(Integer.toString(item.getValue().getWidth()));
@@ -305,14 +347,12 @@ public class DialogController {
 						int testL = Integer.parseInt(lengthBox.getText());
 						int testW = Integer.parseInt(widthBox.getText());
 						int testH = Integer.parseInt(heightBox.getText());
-						
-
 
 					} catch (NumberFormatException nfe) {
 						System.out.println("Dimensions Error: " + nfe);
 						inputErrorDimensions.setVisible(true);
 					}
-					
+
 					int newLength = Integer.parseInt(lengthBox.getText());
 					int newWidth = Integer.parseInt(widthBox.getText());
 					int newHeight = Integer.parseInt(heightBox.getText());
@@ -327,7 +367,7 @@ public class DialogController {
 
 			break;
 		// add item
-		case 4:
+		case 5:
 			selectionModel.select(tabNum);
 			newItemName.setPromptText("Item Name");
 			newItemX.setPromptText("X Coordinate");
@@ -336,17 +376,19 @@ public class DialogController {
 			newItemLength.setPromptText("Length");
 			newItemHeight.setPromptText("Height");
 			newItemPrice.setPromptText("99.99");
+			newItemMarketValue.setPromptText("99.99");
 			applyButton.setOnAction(new EventHandler<ActionEvent>() {
 
 				@Override
 				public void handle(ActionEvent e) {
-					
+
 					inputErrorAddItem.setVisible(false);
-					
+
 					if (!newItemName.getText().equals("")) {
 						if (newItemPrice.getText() == null || newItemY.getText() == null
 								|| newItemWidth.getText() == null || newItemLength.getText() == null
-								|| newItemPrice.getText() == null || newItemHeight.getText() == null) {
+								|| newItemPrice.getText() == null || newItemHeight.getText() == null
+								|| newItemMarketValue.getText() == null) {
 							inputErrorAddItem.setVisible(true);
 						}
 
@@ -361,9 +403,10 @@ public class DialogController {
 							inputErrorAddItem.setText("Position and dimension values must be whole numbers.");
 							inputErrorAddItem.setVisible(true);
 						}
-						
+
 						try {
-							Float p = Float.parseFloat(newItemPrice.getText());
+							Double p = Double.parseDouble(newItemPrice.getText());
+							Double mv = Double.parseDouble(newItemMarketValue.getText());
 						} catch (NumberFormatException nfe) {
 							System.out.println("Add Item Error: " + nfe);
 							inputErrorAddItem.setText("All values except name must be numeric.");
@@ -375,10 +418,10 @@ public class DialogController {
 						int w = Integer.parseInt(newItemWidth.getText());
 						int l = Integer.parseInt(newItemLength.getText());
 						int h = Integer.parseInt(newItemHeight.getText());
-						Float p = Float.parseFloat(newItemPrice.getText());
-						
-						//replace 100 with mv
-						Item newItem = new Item(newItemName.getText(), x, y, w, l, h, p, 100);
+						Double p = Double.parseDouble(newItemPrice.getText());
+						Double mv = Double.parseDouble(newItemMarketValue.getText());
+
+						Item newItem = new Item(newItemName.getText(), x, y, w, l, h, p, mv);
 						((ItemContainer) item.getValue()).addItemAbstract(newItem);
 						cancelDialog();
 
@@ -390,7 +433,7 @@ public class DialogController {
 
 			break;
 		// add item container
-		case 5:
+		case 6:
 			selectionModel.select(tabNum);
 			newContainerName.setPromptText("Item Container Name");
 			newContainerX.setPromptText("X Coordinate");
@@ -407,7 +450,7 @@ public class DialogController {
 					if (!newContainerName.getText().equals("")) {
 						if (newContainerX.getText() == null || newContainerY.getText() == null
 								|| newContainerWidth.getText() == null || newContainerLength.getText() == null
-								|| newContainerPrice.getText() == null || newContainerHeight == null) {
+								|| newContainerPrice.getText() == null || newContainerHeight.getText() == null) {
 							inputErrorAddItemContainer.setVisible(true);
 						}
 
@@ -422,9 +465,9 @@ public class DialogController {
 							inputErrorAddItemContainer.setText("Position and dimension values must be whole numbers.");
 							inputErrorAddItemContainer.setVisible(true);
 						}
-						
+
 						try {
-							Float p = Float.parseFloat(newContainerPrice.getText());
+							Double p = Double.parseDouble(newContainerPrice.getText());
 						} catch (NumberFormatException nfe) {
 							System.out.println("Add Item Error: " + nfe);
 							inputErrorAddItemContainer.setText("All values except name must be numeric.");
@@ -435,8 +478,9 @@ public class DialogController {
 						int y = Integer.parseInt(newContainerY.getText());
 						int w = Integer.parseInt(newContainerWidth.getText());
 						int l = Integer.parseInt(newContainerLength.getText());
-						Float p = Float.parseFloat(newContainerPrice.getText());
 						int h = Integer.parseInt(newContainerHeight.getText());
+						Double p = Double.parseDouble(newContainerPrice.getText());
+						
 
 						ItemContainer newContainer = new ItemContainer(newContainerName.getText(), x, y, w, l, h, p);
 						((ItemContainer) item.getValue()).addItemAbstract(newContainer);
