@@ -23,7 +23,7 @@ public class TelloDrone implements Flight_Capabilities {
 	
 	
 	
-	private final int maxGoto = 500, minGoto = 1, minheight = 20; //records maximum amount the drone can travel before making another call. also records the minimum
+	private final int maxGoto = 500, minGoto = 20, minheight = 20; //records maximum amount the drone can travel before making another call. also records the minimum
 	
 	private int maxHeight; //maximum height for all items in the tree
 	
@@ -84,17 +84,21 @@ public class TelloDrone implements Flight_Capabilities {
 	
 
 	//sends the command to increase drone's altitude. Also checks if it goes past the maximum distance
-	@Override
-	public void IncreaseAltitude(int up) throws IOException {
-		// TODO Auto-generated method stub
-		if (up > maxGoto) {
-			this.Controller.sendCommand("up " + maxGoto);
-			IncreaseAltitude(up - maxGoto);
-		}
-		else {
-		this.Controller.sendCommand("up " + up);
-		}
-	}
+    @Override
+    public void IncreaseAltitude(int up) throws IOException {
+        // TODO Auto-generated method stub
+        if (up > maxGoto) {
+            this.Controller.sendCommand("up " + maxGoto);
+            IncreaseAltitude(up - maxGoto);
+        }
+        else if (up <= minheight){
+
+            this.Controller.sendCommand("up " + minheight);
+        }
+        else {
+        this.Controller.sendCommand("up " + up);
+        }
+    }
 
 	
 	//Sends the command to decrease drone's altitude. Also checks if it goes past the maximum distance
@@ -219,36 +223,37 @@ public class TelloDrone implements Flight_Capabilities {
 	}
 	
 	//method that has the drone scan the entire 32x24 area
-	public void ScanFarm() throws IOException, InterruptedException {
-		
-		
-		activateSDK();
-		launch();
-		
-		IncreaseAltitude(getMaxHeight());
-		for (int i = 0; i < 8; i++) {
-			flyforward(drone.forwardDist);
-			TurnCW(drone.degreeCW);
-			flyforward((int) Math.round(drone.getLength() * .625));
-			TurnCW(drone.degreeCW);
-			flyforward(drone.forwardDist);
-			TurnCCW(drone.degreeCW);
-			flyforward((int) Math.round( drone.getLength() * .625));
-			TurnCCW(drone.degreeCW);
-		}
-		
-		
-		
-		TurnCCW(drone.degreeCCW);
-		flyforward((int) ((int) drone.forwardDist * 1.3));
-		TurnCW(drone.degreeCW);
-		DecreaseAltitude((int) (itemheight(drone.ItemH) * .80));
-		land();
-		end();
-		
-		
-		
-	}
+    public void ScanFarm() throws IOException, InterruptedException {
+
+
+        activateSDK();
+        launch();
+
+        IncreaseAltitude(getMaxHeight());
+        for (int i = 0; i < 8; i++) {
+            flyforward(drone.forwardDist);
+            TurnCW(drone.degreeCW);
+            flyforward((int) Math.round(drone.getLength() * .625));
+            TurnCW(drone.degreeCW);
+            flyforward(drone.forwardDist);
+            TurnCCW(drone.degreeCW);
+            flyforward((int) Math.round( drone.getLength() * .625));
+            TurnCCW(drone.degreeCW);
+        }
+
+
+
+        
+        TurnCCW(drone.degreeCCW);
+        flyforward((int) ((int) drone.forwardDist * 1.5));
+        TurnCW(drone.degreeCW);
+        DecreaseAltitude((int) (getMaxHeight() * .80));
+        land();
+        end();
+
+
+
+    }
 
 	
 	
